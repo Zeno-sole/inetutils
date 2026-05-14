@@ -1,3 +1,16 @@
+inetutils (2:2.7-2deepin1) unstable; urgency=medium
+
+  * Fix CVE-2026-28372: Prevent privilege escalation via systemd service
+    credentials.
+  * Fix CVE-2026-32746: Fix stack buffer overflow processing SLC
+    suboption triplets.
+  * Fix CVE-2026-32772: Do not leak environment variables not marked for
+    export.
+  * Complete fix for CVE-2026-24061: Add --accept-env option to control
+    environment variables.
+
+ -- deepin-ci-robot <packages@deepin.org>  Thu, 14 May 2026 08:57:39 +0800
+
 inetutils (2:2.7-2) unstable; urgency=medium
 
   * Fix remote authentication by-pass in telnetd.
