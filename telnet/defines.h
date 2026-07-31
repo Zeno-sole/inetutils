@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1995-2025 Free Software Foundation, Inc.
+  Copyright (C) 1995-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -46,12 +46,6 @@
  */
 
 #define settimer(x)	clocks.x = clocks.system++
-
-#if !defined TN3270
-
-# define SetIn3270()
-
-#endif /* !defined(TN3270) */
 
 #define NETADD(c)	{ *netoring.supply = c; ring_supplied(&netoring, 1); }
 #define NET2ADD(c1,c2)	{ NETADD(c1); NETADD(c2); }

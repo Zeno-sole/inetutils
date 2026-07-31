@@ -1,5 +1,5 @@
 #
-# Copyright (C) 1997-2025 Free Software Foundation, Inc.
+# Copyright (C) 1997-2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU Inetutils.
 #
@@ -29,6 +29,8 @@ AM_CPPFLAGS = \
 	$(PATHDEF_LOGIN) $(PATHDEF_LOGPID) $(PATHDEF_NOLOGIN) \
 	$(PATHDEF_RLOGIN) $(PATHDEF_RSH) $(PATHDEF_TTY) $(PATHDEF_TTY_PFX) \
 	$(PATHDEF_UTMP) $(PATHDEF_UTMPX) $(PATHDEF_UUCICO)
+
+AM_CFLAGS = $(WARN_CFLAGS)
 
 LDADD = \
 	$(iu_LIBRARIES) \

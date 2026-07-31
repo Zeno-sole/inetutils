@@ -1,5 +1,5 @@
 /* Program name management.
-   Copyright (C) 2016-2025 Free Software Foundation, Inc.
+   Copyright (C) 2016-2026 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as published by
@@ -228,27 +228,20 @@ getprogname (void)
   return p;
 # elif defined __SCO_VERSION__ || defined __sysv5__                /* SCO OpenServer6/UnixWare */
   char buf[80];
-  int fd;
   sprintf (buf, "/proc/%d/cmdline", getpid());
-  fd = open (buf, O_RDONLY);
+  int fd = open (buf, O_RDONLY);
   if (0 <= fd)
     {
       size_t n = read (fd, buf, 79);
       if (n > 0)
         {
           buf[n] = '\0'; /* Guarantee null-termination */
-          char *progname;
-          progname = strrchr (buf, '/');
+          char *progname = strrchr (buf, '/');
           if (progname)
-            {
-              progname = progname + 1; /* Skip the '/' */
-            }
+            progname = progname + 1; /* Skip the '/' */
           else
-            {
-              progname = buf;
-            }
-          char *ret;
-          ret = malloc (strlen (progname) + 1);
+            progname = buf;
+          char *ret = malloc (strlen (progname) + 1);
           if (ret)
             {
               strcpy (ret, progname);

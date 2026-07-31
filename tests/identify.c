@@ -1,5 +1,5 @@
 /* identify -- Probe system and report characteristica.
-  Copyright (C) 2013-2025 Free Software Foundation, Inc.
+  Copyright (C) 2013-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -212,12 +212,6 @@ main (void)
   ux = 1;
 #endif
   tell_macro ("__sun__", ux);
-
-  a = 0;
-#ifdef TN3270
-  a = 1;
-#endif
-  tell_macro ("TN3270", a);
 
   /*
    * Implementation specific charateristica.

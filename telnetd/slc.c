@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1993-2025 Free Software Foundation, Inc.
+  Copyright (C) 1993-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -162,6 +162,9 @@ get_slc_defaults (void)
 void
 add_slc (char func, char flag, cc_t val)
 {
+  /* Do nothing if the entire triplet cannot fit in the buffer.  */
+  if (slcbuf + sizeof slcbuf - slcptr <= 6)
+    return;
 
   if ((*slcptr++ = (unsigned char) func) == 0xff)
     *slcptr++ = 0xff;
@@ -239,7 +242,6 @@ end_slc (unsigned char **bufp)
 	  len = slcptr - slcbuf;
 	  net_output_datalen (slcbuf, len);
 	  netflush ();		/* force it out immediately */
-	  DEBUG (debug_options, 1, printsub ('>', slcbuf + 2, len - 2));
 	}
     }
   return (0);

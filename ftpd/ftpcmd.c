@@ -106,10 +106,6 @@
 
 #include "extern.h"
 
-#if !defined NBBY && defined CHAR_BIT
-#define NBBY CHAR_BIT
-#endif
-
 off_t restart_point;
 
 static char cbuf[512];           /* Command Buffer.  */
@@ -138,7 +134,7 @@ static int yylex          (void);
 static void yyerror       (const char *s);
 
 
-#line 142 "ftpcmd.c"
+#line 138 "ftpcmd.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -348,12 +344,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 141 "ftpcmd.y"
+#line 137 "ftpcmd.y"
 
 	intmax_t i;
 	char   *s;
 
-#line 357 "ftpcmd.c"
+#line 353 "ftpcmd.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -867,15 +863,15 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   185,   185,   186,   192,   196,   201,   207,   246,   251,
-     289,   301,   313,   317,   321,   327,   333,   339,   344,   350,
-     355,   361,   367,   371,   377,   392,   396,   401,   407,   411,
-     429,   433,   439,   445,   450,   455,   468,   480,   487,   495,
-     499,   504,   515,   531,   545,   551,   569,   575,   619,   634,
-     662,   813,   818,   833,   874,   880,   885,   891,   906,   918,
-     923,   926,   930,   934,   947,   951,   955,  1004,  1066,  1135,
-    1139,  1143,  1150,  1155,  1160,  1165,  1170,  1174,  1179,  1185,
-    1193,  1197,  1201,  1208,  1212,  1216,  1223,  1264,  1268,  1297
+       0,   181,   181,   182,   188,   192,   197,   203,   242,   247,
+     281,   293,   305,   309,   313,   319,   325,   331,   336,   342,
+     347,   353,   359,   363,   369,   384,   388,   393,   399,   403,
+     421,   425,   431,   437,   442,   447,   460,   472,   479,   487,
+     491,   496,   507,   523,   537,   543,   561,   567,   611,   626,
+     654,   805,   810,   825,   866,   872,   877,   883,   898,   910,
+     915,   918,   922,   926,   939,   943,   947,   996,  1058,  1127,
+    1131,  1135,  1142,  1147,  1152,  1157,  1162,  1166,  1171,  1177,
+    1185,  1189,  1193,  1200,  1204,  1208,  1215,  1256,  1260,  1289
 };
 #endif
 
@@ -1607,36 +1603,36 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* cmd_list: cmd_list cmd  */
-#line 187 "ftpcmd.y"
+#line 183 "ftpcmd.y"
                 {
 			free (fromname);
 			fromname = (char *) 0;
 			restart_point = (off_t) 0;
 		}
-#line 1617 "ftpcmd.c"
+#line 1613 "ftpcmd.c"
     break;
 
   case 5: /* cmd: USER SP username CRLF  */
-#line 197 "ftpcmd.y"
+#line 193 "ftpcmd.y"
                 {
 			user ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1626 "ftpcmd.c"
+#line 1622 "ftpcmd.c"
     break;
 
   case 6: /* cmd: PASS SP password CRLF  */
-#line 202 "ftpcmd.y"
+#line 198 "ftpcmd.y"
                 {
 			pass ((yyvsp[-1].s));
 			memset ((yyvsp[-1].s), 0, strlen ((yyvsp[-1].s)));
 			free ((yyvsp[-1].s));
 		}
-#line 1636 "ftpcmd.c"
+#line 1632 "ftpcmd.c"
     break;
 
   case 7: /* cmd: PORT check_login SP host_port CRLF  */
-#line 208 "ftpcmd.y"
+#line 204 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i))
 			  {
@@ -1675,20 +1671,20 @@ yyreduce:
 			      }
 			  }
 		}
-#line 1679 "ftpcmd.c"
+#line 1675 "ftpcmd.c"
     break;
 
   case 8: /* cmd: PASV check_login CRLF  */
-#line 247 "ftpcmd.y"
+#line 243 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  passive (PASSIVE_PASV, AF_INET);
 		}
-#line 1688 "ftpcmd.c"
+#line 1684 "ftpcmd.c"
     break;
 
   case 9: /* cmd: TYPE SP type_code CRLF  */
-#line 252 "ftpcmd.y"
+#line 248 "ftpcmd.y"
                 {
 			switch (cmd_type)
 			  {
@@ -1713,7 +1709,6 @@ yyreduce:
 			    break;
 
 			  case TYPE_L:
-#if defined NBBY && NBBY == 8
 			    if (cmd_bytesz == 8)
 			      {
 				reply (200, "Type set to L (byte size 8).");
@@ -1721,16 +1716,13 @@ yyreduce:
 			      }
 			    else
 			      reply (504, "Byte size must be 8.");
-#else /* NBBY == 8 */
-			  UNIMPLEMENTED for NBBY != 8
-#endif /* NBBY == 8 */
 			  }
 		}
-#line 1730 "ftpcmd.c"
+#line 1722 "ftpcmd.c"
     break;
 
   case 10: /* cmd: STRU SP struct_code CRLF  */
-#line 290 "ftpcmd.y"
+#line 282 "ftpcmd.y"
                 {
 			switch ((yyvsp[-1].i))
 			  {
@@ -1742,11 +1734,11 @@ yyreduce:
 			    reply (504, "Unimplemented STRU type.");
 			  }
 		}
-#line 1746 "ftpcmd.c"
+#line 1738 "ftpcmd.c"
     break;
 
   case 11: /* cmd: MODE SP mode_code CRLF  */
-#line 302 "ftpcmd.y"
+#line 294 "ftpcmd.y"
                 {
 			switch ((yyvsp[-1].i))
 			  {
@@ -1758,123 +1750,123 @@ yyreduce:
 			    reply (502, "Unimplemented MODE type.");
 			  }
 		}
-#line 1762 "ftpcmd.c"
+#line 1754 "ftpcmd.c"
     break;
 
   case 12: /* cmd: ALLO SP NUMBER CRLF  */
-#line 314 "ftpcmd.y"
+#line 306 "ftpcmd.y"
+                {
+			reply (202, "ALLO command ignored.");
+		}
+#line 1762 "ftpcmd.c"
+    break;
+
+  case 13: /* cmd: ALLO SP NUMBER SP R SP NUMBER CRLF  */
+#line 310 "ftpcmd.y"
                 {
 			reply (202, "ALLO command ignored.");
 		}
 #line 1770 "ftpcmd.c"
     break;
 
-  case 13: /* cmd: ALLO SP NUMBER SP R SP NUMBER CRLF  */
-#line 318 "ftpcmd.y"
-                {
-			reply (202, "ALLO command ignored.");
-		}
-#line 1778 "ftpcmd.c"
-    break;
-
   case 14: /* cmd: RETR check_login SP pathname CRLF  */
-#line 322 "ftpcmd.y"
+#line 314 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  retrieve ((char *) 0, (yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1788 "ftpcmd.c"
+#line 1780 "ftpcmd.c"
     break;
 
   case 15: /* cmd: STOR check_login SP pathname CRLF  */
-#line 328 "ftpcmd.y"
+#line 320 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  store ((yyvsp[-1].s), "w", 0);
 			free ((yyvsp[-1].s));
 		}
-#line 1798 "ftpcmd.c"
+#line 1790 "ftpcmd.c"
     break;
 
   case 16: /* cmd: APPE check_login SP pathname CRLF  */
-#line 334 "ftpcmd.y"
+#line 326 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  store ((yyvsp[-1].s), "a", 0);
 			free ((yyvsp[-1].s));
 		}
-#line 1808 "ftpcmd.c"
+#line 1800 "ftpcmd.c"
     break;
 
   case 17: /* cmd: NLST check_login CRLF  */
-#line 340 "ftpcmd.y"
+#line 332 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  send_file_list (".");
 		}
-#line 1817 "ftpcmd.c"
+#line 1809 "ftpcmd.c"
     break;
 
   case 18: /* cmd: NLST check_login SP STRING CRLF  */
-#line 345 "ftpcmd.y"
+#line 337 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  send_file_list ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1827 "ftpcmd.c"
+#line 1819 "ftpcmd.c"
     break;
 
   case 19: /* cmd: LIST check_login CRLF  */
-#line 351 "ftpcmd.y"
+#line 343 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  retrieve ("/bin/ls -lgA", "");
 		}
-#line 1836 "ftpcmd.c"
+#line 1828 "ftpcmd.c"
     break;
 
   case 20: /* cmd: LIST check_login SP pathname CRLF  */
-#line 356 "ftpcmd.y"
+#line 348 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  retrieve ("/bin/ls -lgA %s", (yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1846 "ftpcmd.c"
+#line 1838 "ftpcmd.c"
     break;
 
   case 21: /* cmd: STAT check_login SP pathname CRLF  */
-#line 362 "ftpcmd.y"
+#line 354 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  statfilecmd ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1856 "ftpcmd.c"
+#line 1848 "ftpcmd.c"
     break;
 
   case 22: /* cmd: STAT CRLF  */
-#line 368 "ftpcmd.y"
+#line 360 "ftpcmd.y"
                 {
 			statcmd ();
 		}
-#line 1864 "ftpcmd.c"
+#line 1856 "ftpcmd.c"
     break;
 
   case 23: /* cmd: DELE check_login SP pathname CRLF  */
-#line 372 "ftpcmd.y"
+#line 364 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  delete ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1874 "ftpcmd.c"
+#line 1866 "ftpcmd.c"
     break;
 
   case 24: /* cmd: RNTO check_login SP pathname CRLF  */
-#line 378 "ftpcmd.y"
+#line 370 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i))
 			  {
@@ -1889,46 +1881,46 @@ yyreduce:
 			  }
 			free ((yyvsp[-1].s));
 		}
-#line 1893 "ftpcmd.c"
+#line 1885 "ftpcmd.c"
     break;
 
   case 25: /* cmd: ABOR CRLF  */
-#line 393 "ftpcmd.y"
+#line 385 "ftpcmd.y"
                 {
 			reply (225, "ABOR command successful.");
 		}
-#line 1901 "ftpcmd.c"
+#line 1893 "ftpcmd.c"
     break;
 
   case 26: /* cmd: CWD check_login CRLF  */
-#line 397 "ftpcmd.y"
+#line 389 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  cwd (cred.homedir);
 		}
-#line 1910 "ftpcmd.c"
+#line 1902 "ftpcmd.c"
     break;
 
   case 27: /* cmd: CWD check_login SP pathname CRLF  */
-#line 402 "ftpcmd.y"
+#line 394 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  cwd ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1920 "ftpcmd.c"
+#line 1912 "ftpcmd.c"
     break;
 
   case 28: /* cmd: HELP CRLF  */
-#line 408 "ftpcmd.y"
+#line 400 "ftpcmd.y"
                 {
 			help (cmdtab, (char *) 0);
 		}
-#line 1928 "ftpcmd.c"
+#line 1920 "ftpcmd.c"
     break;
 
   case 29: /* cmd: HELP SP STRING CRLF  */
-#line 412 "ftpcmd.y"
+#line 404 "ftpcmd.y"
                 {
 			char *cp = (yyvsp[-1].s);
 
@@ -1946,57 +1938,57 @@ yyreduce:
 			  help (cmdtab, (yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1950 "ftpcmd.c"
+#line 1942 "ftpcmd.c"
     break;
 
   case 30: /* cmd: NOOP CRLF  */
-#line 430 "ftpcmd.y"
+#line 422 "ftpcmd.y"
                 {
 			reply (200, "NOOP command successful.");
 		}
-#line 1958 "ftpcmd.c"
+#line 1950 "ftpcmd.c"
     break;
 
   case 31: /* cmd: MKD check_login SP pathname CRLF  */
-#line 434 "ftpcmd.y"
+#line 426 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  makedir ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1968 "ftpcmd.c"
+#line 1960 "ftpcmd.c"
     break;
 
   case 32: /* cmd: RMD check_login SP pathname CRLF  */
-#line 440 "ftpcmd.y"
+#line 432 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  removedir ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 1978 "ftpcmd.c"
+#line 1970 "ftpcmd.c"
     break;
 
   case 33: /* cmd: PWD check_login CRLF  */
-#line 446 "ftpcmd.y"
+#line 438 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  pwd ();
 		}
-#line 1987 "ftpcmd.c"
+#line 1979 "ftpcmd.c"
     break;
 
   case 34: /* cmd: CDUP check_login CRLF  */
-#line 451 "ftpcmd.y"
+#line 443 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  cwd ("..");
 		}
-#line 1996 "ftpcmd.c"
+#line 1988 "ftpcmd.c"
     break;
 
   case 35: /* cmd: FEAT check_login CRLF  */
-#line 456 "ftpcmd.y"
+#line 448 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  {
@@ -2008,11 +2000,11 @@ yyreduce:
 			    reply (211, "End");
 			  }
 		}
-#line 2012 "ftpcmd.c"
+#line 2004 "ftpcmd.c"
     break;
 
   case 36: /* cmd: FEAT check_login SP STRING CRLF  */
-#line 469 "ftpcmd.y"
+#line 461 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i))
 			  {
@@ -2020,22 +2012,22 @@ yyreduce:
 			    free ((yyvsp[-1].s));
 			  }
 		}
-#line 2024 "ftpcmd.c"
+#line 2016 "ftpcmd.c"
     break;
 
   case 37: /* cmd: OPTS check_login CRLF  */
-#line 481 "ftpcmd.y"
+#line 473 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  {
 			    reply (501, "Must have an argument.");
 			  }
 		}
-#line 2035 "ftpcmd.c"
+#line 2027 "ftpcmd.c"
     break;
 
   case 38: /* cmd: OPTS check_login SP STRING CRLF  */
-#line 488 "ftpcmd.y"
+#line 480 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i))
 			  {
@@ -2043,28 +2035,28 @@ yyreduce:
 			    free ((yyvsp[-1].s));
 			  }
 		}
-#line 2047 "ftpcmd.c"
+#line 2039 "ftpcmd.c"
     break;
 
   case 39: /* cmd: SITE SP HELP CRLF  */
-#line 496 "ftpcmd.y"
+#line 488 "ftpcmd.y"
                 {
 			help (sitetab, (char *) 0);
 		}
-#line 2055 "ftpcmd.c"
+#line 2047 "ftpcmd.c"
     break;
 
   case 40: /* cmd: SITE SP HELP SP STRING CRLF  */
-#line 500 "ftpcmd.y"
+#line 492 "ftpcmd.y"
                 {
 			help (sitetab, (yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 2064 "ftpcmd.c"
+#line 2056 "ftpcmd.c"
     break;
 
   case 41: /* cmd: SITE SP UMASK check_login CRLF  */
-#line 505 "ftpcmd.y"
+#line 497 "ftpcmd.y"
                 {
 			int oldmask;
 
@@ -2075,11 +2067,11 @@ yyreduce:
 			    reply (200, "Current UMASK is %03o", oldmask);
 			  }
 		}
-#line 2079 "ftpcmd.c"
+#line 2071 "ftpcmd.c"
     break;
 
   case 42: /* cmd: SITE SP UMASK check_login SP octal_number CRLF  */
-#line 516 "ftpcmd.y"
+#line 508 "ftpcmd.y"
                 {
 			int oldmask;
 
@@ -2095,11 +2087,11 @@ yyreduce:
 			      }
 			  }
 		}
-#line 2099 "ftpcmd.c"
+#line 2091 "ftpcmd.c"
     break;
 
   case 43: /* cmd: SITE SP CHMOD check_login SP octal_number SP pathname CRLF  */
-#line 532 "ftpcmd.y"
+#line 524 "ftpcmd.y"
                 {
 			if ((yyvsp[-5].i) && ((yyvsp[-1].s) != NULL))
 			  {
@@ -2113,21 +2105,21 @@ yyreduce:
 			  }
 			free ((yyvsp[-1].s));
 		}
-#line 2117 "ftpcmd.c"
+#line 2109 "ftpcmd.c"
     break;
 
   case 44: /* cmd: SITE SP IDLE CRLF  */
-#line 546 "ftpcmd.y"
+#line 538 "ftpcmd.y"
                 {
 			reply (200,
 			       "Current IDLE time limit is %d seconds; max %d",
 			       timeout, maxtimeout);
 		}
-#line 2127 "ftpcmd.c"
+#line 2119 "ftpcmd.c"
     break;
 
   case 45: /* cmd: SITE SP IDLE check_login SP NUMBER CRLF  */
-#line 552 "ftpcmd.y"
+#line 544 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i))
 			  {
@@ -2145,21 +2137,21 @@ yyreduce:
 			      }
 			  }
 		}
-#line 2149 "ftpcmd.c"
+#line 2141 "ftpcmd.c"
     break;
 
   case 46: /* cmd: STOU check_login SP pathname CRLF  */
-#line 570 "ftpcmd.y"
+#line 562 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  store ((yyvsp[-1].s), "w", 1);
 			free ((yyvsp[-1].s));
 		}
-#line 2159 "ftpcmd.c"
+#line 2151 "ftpcmd.c"
     break;
 
   case 47: /* cmd: SYST CRLF  */
-#line 576 "ftpcmd.y"
+#line 568 "ftpcmd.y"
                 {
 		        const char *sys_type; /* Official rfc-defined os type.  */
 			char *version = 0; /* A more specific type. */
@@ -2188,29 +2180,29 @@ yyreduce:
 
 			if (!no_version && version)
 			  reply (215, "%s Type: L%d Version: %s",
-				 sys_type, NBBY, version);
+				 sys_type, CHAR_BIT, version);
 			else
-			  reply (215, "%s Type: L%d", sys_type, NBBY);
+			  reply (215, "%s Type: L%d", sys_type, CHAR_BIT);
 
 #ifdef HAVE_UNAME
 			free (version);
 #endif
 		}
-#line 2200 "ftpcmd.c"
+#line 2192 "ftpcmd.c"
     break;
 
   case 48: /* cmd: SIZE check_login SP pathname CRLF  */
-#line 620 "ftpcmd.y"
+#line 612 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  sizecmd ((yyvsp[-1].s));
 			free ((yyvsp[-1].s));
 		}
-#line 2210 "ftpcmd.c"
+#line 2202 "ftpcmd.c"
     break;
 
   case 49: /* cmd: MDTM check_login SP pathname CRLF  */
-#line 635 "ftpcmd.y"
+#line 627 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i) && (yyvsp[-1].s) != NULL)
 			  {
@@ -2234,11 +2226,11 @@ yyreduce:
 			  }
 			free ((yyvsp[-1].s));
 		}
-#line 2238 "ftpcmd.c"
+#line 2230 "ftpcmd.c"
     break;
 
   case 50: /* cmd: EPRT check_login SP CHAR net_proto CHAR net_addr CHAR tcp_port CHAR CRLF  */
-#line 663 "ftpcmd.y"
+#line 655 "ftpcmd.y"
                 {
 			usedefault = 0;
 			if (pdata >= 0)
@@ -2385,20 +2377,20 @@ yyreduce:
 			   */
 			  reply (500, "Illegal EPRT Command");
 		}
-#line 2389 "ftpcmd.c"
+#line 2381 "ftpcmd.c"
     break;
 
   case 51: /* cmd: EPSV check_login CRLF  */
-#line 814 "ftpcmd.y"
+#line 806 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  passive (PASSIVE_EPSV, AF_UNSPEC);
 		}
-#line 2398 "ftpcmd.c"
+#line 2390 "ftpcmd.c"
     break;
 
   case 52: /* cmd: EPSV check_login SP net_proto CRLF  */
-#line 819 "ftpcmd.y"
+#line 811 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i))
 			  {
@@ -2409,11 +2401,11 @@ yyreduce:
 				     "Network protocol not supported, use (1,2)");
 			  }
 		}
-#line 2413 "ftpcmd.c"
+#line 2405 "ftpcmd.c"
     break;
 
   case 53: /* cmd: LPRT check_login SP long_host_port CRLF  */
-#line 834 "ftpcmd.y"
+#line 826 "ftpcmd.y"
                 {
 			if ((yyvsp[-3].i))
 			  {
@@ -2450,37 +2442,37 @@ yyreduce:
 			      }
 			  } /* check_login */
 		}
-#line 2454 "ftpcmd.c"
+#line 2446 "ftpcmd.c"
     break;
 
   case 54: /* cmd: LPSV check_login CRLF  */
-#line 875 "ftpcmd.y"
+#line 867 "ftpcmd.y"
                 {
 			if ((yyvsp[-1].i))
 			  passive (PASSIVE_LPSV, 0 /* not used */);
 		}
-#line 2463 "ftpcmd.c"
+#line 2455 "ftpcmd.c"
     break;
 
   case 55: /* cmd: QUIT CRLF  */
-#line 881 "ftpcmd.y"
+#line 873 "ftpcmd.y"
                 {
 			reply (221, "Goodbye.");
 			dologout (0);
 		}
-#line 2472 "ftpcmd.c"
+#line 2464 "ftpcmd.c"
     break;
 
   case 56: /* cmd: error CRLF  */
-#line 886 "ftpcmd.y"
+#line 878 "ftpcmd.y"
                 {
 			yyerrok;
 		}
-#line 2480 "ftpcmd.c"
+#line 2472 "ftpcmd.c"
     break;
 
   case 57: /* rcmd: RNFR check_login SP pathname CRLF  */
-#line 892 "ftpcmd.y"
+#line 884 "ftpcmd.y"
                 {
 			restart_point = (off_t) 0;
 			if ((yyvsp[-3].i) && (yyvsp[-1].s))
@@ -2491,11 +2483,11 @@ yyreduce:
 			if (fromname == (char *) 0 && (yyvsp[-1].s))
 			  free ((yyvsp[-1].s));
 		}
-#line 2495 "ftpcmd.c"
+#line 2487 "ftpcmd.c"
     break;
 
   case 58: /* rcmd: REST SP byte_size CRLF  */
-#line 907 "ftpcmd.y"
+#line 899 "ftpcmd.y"
                 {
 		        free (fromname);
 			fromname = (char *) 0;
@@ -2504,19 +2496,19 @@ yyreduce:
 			       (intmax_t) restart_point,
 			       "Send STORE or RETRIEVE to initiate transfer.");
 		}
-#line 2508 "ftpcmd.c"
+#line 2500 "ftpcmd.c"
     break;
 
   case 60: /* password: %empty  */
-#line 923 "ftpcmd.y"
+#line 915 "ftpcmd.y"
                 {
 			(yyval.s) = (char *) calloc (1, sizeof (char));
 		}
-#line 2516 "ftpcmd.c"
+#line 2508 "ftpcmd.c"
     break;
 
   case 63: /* net_proto: NUMBER  */
-#line 935 "ftpcmd.y"
+#line 927 "ftpcmd.y"
                 {
 			/* Rewrite as valid address family.  */
 			if ((yyvsp[0].i) == 1)
@@ -2526,11 +2518,11 @@ yyreduce:
 			else
 			  (yyval.i) = -1;	/* Invalid protocol.  */
 		}
-#line 2530 "ftpcmd.c"
+#line 2522 "ftpcmd.c"
     break;
 
   case 66: /* host_port: NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER  */
-#line 957 "ftpcmd.y"
+#line 949 "ftpcmd.y"
                 {
 			int err;
 			char a[INET6_ADDRSTRLEN], p[8];
@@ -2575,11 +2567,11 @@ yyreduce:
 			    (yyval.i) = 1;
 			  }
 		}
-#line 2579 "ftpcmd.c"
+#line 2571 "ftpcmd.c"
     break;
 
   case 67: /* long_host_port: NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER  */
-#line 1007 "ftpcmd.y"
+#line 999 "ftpcmd.y"
                 {
 			int err;
 			char a[INET6_ADDRSTRLEN], p[8];
@@ -2639,11 +2631,11 @@ yyreduce:
 			      }
 			  }
 		}
-#line 2643 "ftpcmd.c"
+#line 2635 "ftpcmd.c"
     break;
 
   case 68: /* long_host_port: NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER  */
-#line 1072 "ftpcmd.y"
+#line 1064 "ftpcmd.y"
                 {
 			int err;
 			char a[INET6_ADDRSTRLEN], p[8];
@@ -2704,154 +2696,154 @@ yyreduce:
 			      }
 			  }
 		}
-#line 2708 "ftpcmd.c"
+#line 2700 "ftpcmd.c"
     break;
 
   case 69: /* form_code: N  */
-#line 1136 "ftpcmd.y"
+#line 1128 "ftpcmd.y"
                 {
 			(yyval.i) = FORM_N;
+		}
+#line 2708 "ftpcmd.c"
+    break;
+
+  case 70: /* form_code: T  */
+#line 1132 "ftpcmd.y"
+                {
+			(yyval.i) = FORM_T;
 		}
 #line 2716 "ftpcmd.c"
     break;
 
-  case 70: /* form_code: T  */
-#line 1140 "ftpcmd.y"
+  case 71: /* form_code: C  */
+#line 1136 "ftpcmd.y"
                 {
-			(yyval.i) = FORM_T;
+			(yyval.i) = FORM_C;
 		}
 #line 2724 "ftpcmd.c"
     break;
 
-  case 71: /* form_code: C  */
-#line 1144 "ftpcmd.y"
-                {
-			(yyval.i) = FORM_C;
-		}
-#line 2732 "ftpcmd.c"
-    break;
-
   case 72: /* type_code: A  */
-#line 1151 "ftpcmd.y"
+#line 1143 "ftpcmd.y"
                 {
 			cmd_type = TYPE_A;
 			cmd_form = FORM_N;
 		}
-#line 2741 "ftpcmd.c"
+#line 2733 "ftpcmd.c"
     break;
 
   case 73: /* type_code: A SP form_code  */
-#line 1156 "ftpcmd.y"
+#line 1148 "ftpcmd.y"
                 {
 			cmd_type = TYPE_A;
 			cmd_form = (yyvsp[0].i);
 		}
-#line 2750 "ftpcmd.c"
+#line 2742 "ftpcmd.c"
     break;
 
   case 74: /* type_code: E  */
-#line 1161 "ftpcmd.y"
+#line 1153 "ftpcmd.y"
                 {
 			cmd_type = TYPE_E;
 			cmd_form = FORM_N;
 		}
-#line 2759 "ftpcmd.c"
+#line 2751 "ftpcmd.c"
     break;
 
   case 75: /* type_code: E SP form_code  */
-#line 1166 "ftpcmd.y"
+#line 1158 "ftpcmd.y"
                 {
 			cmd_type = TYPE_E;
 			cmd_form = (yyvsp[0].i);
+		}
+#line 2760 "ftpcmd.c"
+    break;
+
+  case 76: /* type_code: I  */
+#line 1163 "ftpcmd.y"
+                {
+			cmd_type = TYPE_I;
 		}
 #line 2768 "ftpcmd.c"
     break;
 
-  case 76: /* type_code: I  */
-#line 1171 "ftpcmd.y"
-                {
-			cmd_type = TYPE_I;
-		}
-#line 2776 "ftpcmd.c"
-    break;
-
   case 77: /* type_code: L  */
-#line 1175 "ftpcmd.y"
+#line 1167 "ftpcmd.y"
                 {
 			cmd_type = TYPE_L;
-			cmd_bytesz = NBBY;
+			cmd_bytesz = CHAR_BIT;
 		}
-#line 2785 "ftpcmd.c"
+#line 2777 "ftpcmd.c"
     break;
 
   case 78: /* type_code: L SP byte_size  */
-#line 1180 "ftpcmd.y"
+#line 1172 "ftpcmd.y"
                 {
 			cmd_type = TYPE_L;
 			cmd_bytesz = (yyvsp[0].i);
 		}
-#line 2794 "ftpcmd.c"
+#line 2786 "ftpcmd.c"
     break;
 
   case 79: /* type_code: L byte_size  */
-#line 1186 "ftpcmd.y"
+#line 1178 "ftpcmd.y"
                 {
 			cmd_type = TYPE_L;
 			cmd_bytesz = (yyvsp[0].i);
+		}
+#line 2795 "ftpcmd.c"
+    break;
+
+  case 80: /* struct_code: F  */
+#line 1186 "ftpcmd.y"
+                {
+			(yyval.i) = STRU_F;
 		}
 #line 2803 "ftpcmd.c"
     break;
 
-  case 80: /* struct_code: F  */
-#line 1194 "ftpcmd.y"
+  case 81: /* struct_code: R  */
+#line 1190 "ftpcmd.y"
                 {
-			(yyval.i) = STRU_F;
+			(yyval.i) = STRU_R;
 		}
 #line 2811 "ftpcmd.c"
     break;
 
-  case 81: /* struct_code: R  */
-#line 1198 "ftpcmd.y"
+  case 82: /* struct_code: P  */
+#line 1194 "ftpcmd.y"
                 {
-			(yyval.i) = STRU_R;
+			(yyval.i) = STRU_P;
 		}
 #line 2819 "ftpcmd.c"
     break;
 
-  case 82: /* struct_code: P  */
-#line 1202 "ftpcmd.y"
+  case 83: /* mode_code: S  */
+#line 1201 "ftpcmd.y"
                 {
-			(yyval.i) = STRU_P;
+			(yyval.i) = MODE_S;
 		}
 #line 2827 "ftpcmd.c"
     break;
 
-  case 83: /* mode_code: S  */
-#line 1209 "ftpcmd.y"
+  case 84: /* mode_code: B  */
+#line 1205 "ftpcmd.y"
                 {
-			(yyval.i) = MODE_S;
+			(yyval.i) = MODE_B;
 		}
 #line 2835 "ftpcmd.c"
     break;
 
-  case 84: /* mode_code: B  */
-#line 1213 "ftpcmd.y"
+  case 85: /* mode_code: C  */
+#line 1209 "ftpcmd.y"
                 {
-			(yyval.i) = MODE_B;
+			(yyval.i) = MODE_C;
 		}
 #line 2843 "ftpcmd.c"
     break;
 
-  case 85: /* mode_code: C  */
-#line 1217 "ftpcmd.y"
-                {
-			(yyval.i) = MODE_C;
-		}
-#line 2851 "ftpcmd.c"
-    break;
-
   case 86: /* pathname: pathstring  */
-#line 1224 "ftpcmd.y"
+#line 1216 "ftpcmd.y"
                 {
 			/*
 			 * Problem: this production is used for all pathname
@@ -2889,11 +2881,11 @@ yyreduce:
 			else
 			  (yyval.s) = (yyvsp[0].s);
 		}
-#line 2893 "ftpcmd.c"
+#line 2885 "ftpcmd.c"
     break;
 
   case 88: /* octal_number: NUMBER  */
-#line 1269 "ftpcmd.y"
+#line 1261 "ftpcmd.y"
                 {
 			int ret, dec, multby, digit;
 
@@ -2918,11 +2910,11 @@ yyreduce:
 			  }
 			(yyval.i) = ret;
 		}
-#line 2922 "ftpcmd.c"
+#line 2914 "ftpcmd.c"
     break;
 
   case 89: /* check_login: %empty  */
-#line 1297 "ftpcmd.y"
+#line 1289 "ftpcmd.y"
                 {
 			if (cred.logged_in)
 			  (yyval.i) = 1;
@@ -2932,11 +2924,11 @@ yyreduce:
 			    (yyval.i) = 0;
 			  }
 		}
-#line 2936 "ftpcmd.c"
+#line 2928 "ftpcmd.c"
     break;
 
 
-#line 2940 "ftpcmd.c"
+#line 2932 "ftpcmd.c"
 
       default: break;
     }
@@ -3129,7 +3121,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 1308 "ftpcmd.y"
+#line 1300 "ftpcmd.y"
 
 
 #define	CMD	0	/* beginning of command */

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1995-2025 Free Software Foundation, Inc.
+  Copyright (C) 1995-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -1023,28 +1023,15 @@ void
 SetForExit (void)
 {
   setconnmode (0);
-#if defined TN3270
-  if (In3270)
-    {
-      Finish3270 ();
-    }
-#else /* defined(TN3270) */
   do
     {
       telrcv ();		/* Process any incoming data */
       EmptyTerminal ();
     }
   while (ring_full_count (&netiring));	/* While there is any */
-#endif /* defined(TN3270) */
   setcommandmode ();
   fflush (stdout);
   fflush (stderr);
-#if defined TN3270
-  if (In3270)
-    {
-      StopScreen (1);
-    }
-#endif /* defined(TN3270) */
   setconnmode (0);
   EmptyTerminal ();		/* Flush the path to the tty */
   setcommandmode ();

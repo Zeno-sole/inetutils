@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2001-2025 Free Software Foundation, Inc.
+  Copyright (C) 2001-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -45,7 +45,6 @@
 #include <ping.h>
 #include "ping_impl.h"
 
-#define NROUTES		9	/* number of record route slots */
 #ifndef MAX_IPOPTLEN
 # define MAX_IPOPTLEN 40
 #endif

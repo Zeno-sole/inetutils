@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1995-2025 Free Software Foundation, Inc.
+  Copyright (C) 1995-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -197,9 +197,6 @@ getconnmode (void)
 #ifdef	KLUDGELINEMODE
   extern int kludgelinemode;
 #endif
-
-  if (In3270)
-    return (MODE_FLOW);
 
   if (my_want_state_is_dont (TELOPT_ECHO))
     mode |= MODE_ECHO;

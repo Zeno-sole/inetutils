@@ -1,5 +1,5 @@
 /* syslogd - log system messages
-  Copyright (C) 1997-2025 Free Software Foundation, Inc.
+  Copyright (C) 1997-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -909,7 +909,7 @@ create_unix_socket (const char *path)
   strncpy (sunx.sun_path, path, sizeof (sunx.sun_path) - 1);
   fd = socket (AF_UNIX, SOCK_DGRAM, 0);
   if (fd < 0 || bind (fd, (struct sockaddr *) &sunx, SUN_LEN (&sunx)) < 0
-      || chmod (path, 0666) < 0)
+      || lchmod (path, 0666) < 0)
     {
       snprintf (line, sizeof (line), "cannot create %s", path);
       logerror (line);
@@ -1621,7 +1621,7 @@ wallmsg (struct filed *f, struct iovec *iov)
   STRUCT_UTMP *utp;
 #if defined UTMP_NAME_FUNCTION || !defined HAVE_GETUTXENT
   STRUCT_UTMP *utmpbuf;
-  size_t utmp_count;
+  idx_t utmp_count;
 #endif /* UTMP_NAME_FUNCTION || !HAVE_GETUTXENT */
   int i;
   char *p;

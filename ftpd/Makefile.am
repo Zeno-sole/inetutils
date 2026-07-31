@@ -1,5 +1,5 @@
 #
-# Copyright (C) 1997-2025 Free Software Foundation, Inc.
+# Copyright (C) 1997-2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU Inetutils.
 #
@@ -23,6 +23,8 @@ AM_CPPFLAGS = \
 	$(PATHDEF_FTPWELCOME) $(PATHDEF_FTPUSERS) \
 	$(PATHDEF_FTPLOGINMESG) $(PATHDEF_FTPCHROOT) $(PATHDEF_FTPDPID) \
 	$(PATHDEF_DEVNULL) $(PATHDEF_NOLOGIN) $(PATHDEF_BSHELL)
+
+AM_CFLAGS = $(WARN_CFLAGS)
 
 LDADD = \
 	$(LIBLS) \

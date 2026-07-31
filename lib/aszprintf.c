@@ -1,5 +1,5 @@
 /* Formatted output to strings.
-   Copyright (C) 1999-2025 Free Software Foundation, Inc.
+   Copyright (C) 1999-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -25,10 +25,8 @@ ptrdiff_t
 aszprintf (char **resultp, const char *format, ...)
 {
   va_list args;
-  ptrdiff_t result;
-
   va_start (args, format);
-  result = vaszprintf (resultp, format, args);
+  ptrdiff_t result = vaszprintf (resultp, format, args);
   va_end (args);
   return result;
 }

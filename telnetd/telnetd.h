@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1996-2025 Free Software Foundation, Inc.
+  Copyright (C) 1996-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -57,28 +57,14 @@
 #define obstack_chunk_free free
 #include <obstack.h>
 
+#include "gl_hash_set.h"
+#include "gl_xset.h"
+#include "hashcode-string1.h"
 #include "xalloc.h"
 
 #ifndef HAVE_CC_T
 typedef unsigned char cc_t;
 #endif
-
-typedef enum debug_mode
-{
-  debug_options,
-  debug_report,
-  debug_net_data,
-  debug_pty_data,
-  debug_auth,
-  debug_encr,
-  debug_max_mode
-} debug_mode_t;
-
-#define MAX_DEBUG_LEVEL 100
-
-extern int debug_level[];
-
-#define DEBUG(mode,level,c) if (debug_level[mode]>=level) c
 
 struct telnetd_clocks
 {
@@ -251,6 +237,7 @@ extern char *user_name;
 extern int pty, net;
 extern int SYNCHing;		/* we are in TELNET SYNCH mode */
 extern struct telnetd_clocks clocks;
+extern gl_set_t accept_env_set;
 extern char line[];
 
 extern char *xstrdup (const char *);
@@ -276,13 +263,6 @@ int pty_buffer_is_full (void);
 void pty_output_byte (int c);
 void pty_output_datalen (const void *data, size_t len);
 int pty_buffer_level (void);
-
-/* Debugging functions */
-extern void printoption (char *, int);
-extern void printdata (char *, char *, int);
-extern void printsub (int, unsigned char *, int);
-extern void debug_output_datalen (const char *data, size_t len);
-extern void debug_output_data (const char *fmt, ...);
 
 /* TTY functions */
 extern void init_termbuf (void);

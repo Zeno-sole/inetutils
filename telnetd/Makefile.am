@@ -1,5 +1,5 @@
 #
-# Copyright (C) 1997-2025 Free Software Foundation, Inc.
+# Copyright (C) 1997-2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU Inetutils.
 #
@@ -23,6 +23,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	$(INCAUTH) $(NCURSES_INCLUDE) \
 	$(PATHDEF_DEV) $(PATHDEF_TTY) $(PATHDEF_TTY_PFX) $(PATHDEF_LOGIN)
+
+AM_CFLAGS = $(WARN_CFLAGS)
 
 LDADD = \
 	$(top_builddir)/libtelnet/libtelnet.a \

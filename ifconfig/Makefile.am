@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2001-2025 Free Software Foundation, Inc.
+# Copyright (C) 2001-2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU Inetutils.
 #
@@ -23,6 +23,8 @@ SUBDIRS = system
 AM_CPPFLAGS = \
 	$(iu_INCLUDES) \
 	$(PATHDEF_PROCNET_DEV)
+
+AM_CFLAGS = $(WARN_CFLAGS)
 
 LDADD = \
 	$(iu_LIBRARIES)

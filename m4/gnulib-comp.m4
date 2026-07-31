@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2025 Free Software Foundation, Inc.
+# Copyright (C) 2002-2026 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -84,6 +84,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module calloc-posix:
   # Code from module chdir:
   # Code from module chdir-long:
+  # Code from module chown:
   # Code from module clock-time:
   # Code from module cloexec:
   # Code from module close:
@@ -178,6 +179,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module gnupload:
   # Code from module hard-locale:
   # Code from module hash:
+  # Code from module hash-set:
   # Code from module hashcode-string1:
   # Code from module havelib:
   # Code from module hostent:
@@ -197,6 +199,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module isnand-nolibm:
   # Code from module isnanf-nolibm:
   # Code from module isnanl-nolibm:
+  # Code from module issymlink:
+  # Code from module issymlinkat:
   # Code from module iswblank:
   # Code from module iswctype:
   # Code from module iswdigit:
@@ -205,6 +209,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module langinfo-h:
   # Code from module largefile:
   AC_REQUIRE([AC_SYS_LARGEFILE])
+  # Code from module lchmod:
+  # Code from module lchown:
   # Code from module libc-config:
   # Code from module limits-h:
   # Code from module localcharset:
@@ -218,6 +224,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module malloc-gnu:
   # Code from module malloc-posix:
   # Code from module malloca:
+  # Code from module manywarnings:
   # Code from module math-h:
   # Code from module mbchar:
   # Code from module mbiterf:
@@ -276,6 +283,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module read-file:
   # Code from module readdir:
   # Code from module readline:
+  # Code from module readlink:
+  # Code from module readlinkat:
   # Code from module readme-release:
   # Code from module readutmp:
   # Code from module realloc-posix:
@@ -287,12 +296,13 @@ AC_DEFUN([gl_EARLY],
   # Code from module sched-h:
   # Code from module select:
   # Code from module servent:
+  # Code from module set:
   # Code from module setenv:
   # Code from module sethostname:
   # Code from module setlocale-null:
   # Code from module setlocale-null-unlocked:
   # Code from module signal-h:
-  # Code from module signbit:
+  # Code from module signbit-no-c++:
   # Code from module sigprocmask:
   # Code from module size_max:
   # Code from module sleep:
@@ -396,6 +406,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module version-etc-fsf:
   # Code from module vsnprintf:
   # Code from module vsnzprintf:
+  # Code from module warnings:
   # Code from module wchar-h:
   # Code from module wcrtomb:
   # Code from module wctype:
@@ -413,6 +424,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module xgetcwd:
   # Code from module xgetdomainname:
   # Code from module xgethostname:
+  # Code from module xset:
   # Code from module xsize:
   # Code from module xstrtoimax:
   # Code from module xstrtol:
@@ -581,6 +593,12 @@ AC_DEFUN([gl_INIT],
   AM_COND_IF([GL_COND_OBJ_CHDIR_LONG], [
     gl_PREREQ_CHDIR_LONG
   ])
+  gl_FUNC_CHOWN
+  gl_CONDITIONAL([GL_COND_OBJ_CHOWN],
+                 [test $HAVE_CHOWN = 0 || test $REPLACE_CHOWN = 1])
+  gl_CONDITIONAL([GL_COND_OBJ_FCHOWN_STUB],
+                 [test $REPLACE_CHOWN = 1 && test $ac_cv_func_fchown = no])
+  gl_UNISTD_MODULE_INDICATOR([chown])
   gl_CLOCK_TIME
   gl_MODULE_INDICATOR_FOR_TESTS([cloexec])
   gl_FUNC_CLOSE
@@ -799,7 +817,8 @@ AC_DEFUN([gl_INIT],
                  [test $HAVE_GETGROUPS = 0 || test $REPLACE_GETGROUPS = 1])
   gl_UNISTD_MODULE_INDICATOR([getgroups])
   gl_FUNC_GETHOSTNAME
-  gl_CONDITIONAL([GL_COND_OBJ_GETHOSTNAME], [test $HAVE_GETHOSTNAME = 0])
+  gl_CONDITIONAL([GL_COND_OBJ_GETHOSTNAME],
+                 [test $HAVE_GETHOSTNAME = 0 || test $UNISTD_H_HAVE_WINSOCK2_H = 1])
   AM_COND_IF([GL_COND_OBJ_GETHOSTNAME], [
     gl_PREREQ_GETHOSTNAME
   ])
@@ -958,6 +977,8 @@ AC_DEFUN([gl_INIT],
     AC_LIBOBJ([isnanl])
     gl_PREREQ_ISNANL
   fi
+  gl_MODULE_INDICATOR([issymlink])
+  gl_MODULE_INDICATOR([issymlinkat])
   gl_FUNC_ISWBLANK
   gl_CONDITIONAL([GL_COND_OBJ_ISWBLANK],
                  [! { test $HAVE_ISWCNTRL = 0 || test $REPLACE_ISWCNTRL = 1; } && { test $HAVE_ISWBLANK = 0 || test $REPLACE_ISWBLANK = 1; }])
@@ -982,6 +1003,16 @@ AC_DEFUN([gl_INIT],
   gl_LANGINFO_H_REQUIRE_DEFAULTS
   AC_PROG_MKDIR_P
   AC_REQUIRE([gl_LARGEFILE])
+  gl_FUNC_LCHMOD
+  gl_CONDITIONAL([GL_COND_OBJ_LCHMOD], [test $HAVE_LCHMOD = 0])
+  AM_COND_IF([GL_COND_OBJ_LCHMOD], [
+    gl_PREREQ_LCHMOD
+  ])
+  gl_SYS_STAT_MODULE_INDICATOR([lchmod])
+  gl_FUNC_LCHOWN
+  gl_CONDITIONAL([GL_COND_OBJ_LCHOWN],
+                 [test $HAVE_LCHOWN = 0 || test $REPLACE_LCHOWN = 1])
+  gl_UNISTD_MODULE_INDICATOR([lchown])
   gl___INLINE
   gl_LIMITS_H
   gl_CONDITIONAL_HEADER([limits.h])
@@ -1246,6 +1277,17 @@ AC_DEFUN([gl_INIT],
   AM_COND_IF([GL_COND_OBJ_READLINE], [
     gl_PREREQ_READLINE
   ])
+  gl_FUNC_READLINK
+  gl_CONDITIONAL([GL_COND_OBJ_READLINK],
+                 [test $HAVE_READLINK = 0 || test $REPLACE_READLINK = 1])
+  AM_COND_IF([GL_COND_OBJ_READLINK], [
+    gl_PREREQ_READLINK
+  ])
+  gl_UNISTD_MODULE_INDICATOR([readlink])
+  gl_FUNC_READLINKAT
+  gl_CONDITIONAL([GL_COND_OBJ_READLINKAT],
+                 [test $HAVE_READLINKAT = 0 || test $REPLACE_READLINKAT = 1])
+  gl_UNISTD_MODULE_INDICATOR([readlinkat])
   gl_READUTMP
   gl_FUNC_REALLOC_POSIX
   gl_FUNC_REALLOC_0_NONNULL
@@ -1298,7 +1340,7 @@ AC_DEFUN([gl_INIT],
   AC_PROG_MKDIR_P
   gl_SIGNBIT
   gl_CONDITIONAL([GL_COND_OBJ_SIGNBIT3], [test $REPLACE_SIGNBIT = 1])
-  gl_MATH_MODULE_INDICATOR([signbit])
+  gl_MATH_MODULE_INDICATOR([signbit-no-cxx])
   gl_SIGNALBLOCKING
   gl_CONDITIONAL([GL_COND_OBJ_SIGPROCMASK], [test $HAVE_POSIX_SIGNALBLOCKING = 0])
   AM_COND_IF([GL_COND_OBJ_SIGPROCMASK], [
@@ -1904,6 +1946,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/cdefs.h
   lib/chdir-long.c
   lib/chdir-long.h
+  lib/chown.c
   lib/cloexec.c
   lib/cloexec.h
   lib/close.c
@@ -1928,6 +1971,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/exitfail.c
   lib/exitfail.h
   lib/fchdir.c
+  lib/fchown-stub.c
   lib/fcntl--.h
   lib/fcntl-safer.h
   lib/fcntl.c
@@ -1997,6 +2041,15 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getugroups.c
   lib/getugroups.h
   lib/getusershell.c
+  lib/gl_anyhash1.h
+  lib/gl_anyhash2.h
+  lib/gl_anyhash_primes.h
+  lib/gl_hash_set.c
+  lib/gl_hash_set.h
+  lib/gl_set.c
+  lib/gl_set.h
+  lib/gl_xset.c
+  lib/gl_xset.h
   lib/glob-libc.h
   lib/glob.c
   lib/glob.in.h
@@ -2036,6 +2089,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/isnanf.c
   lib/isnanl-nolibm.h
   lib/isnanl.c
+  lib/issymlink.c
+  lib/issymlink.h
+  lib/issymlinkat.c
+  lib/issymlinkat.h
   lib/iswblank.c
   lib/iswctype-impl.h
   lib/iswctype.c
@@ -2046,6 +2103,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/langinfo.in.h
   lib/lc-charset-dispatch.c
   lib/lc-charset-dispatch.h
+  lib/lchmod.c
+  lib/lchown.c
   lib/libc-config.h
   lib/limits.in.h
   lib/localcharset.c
@@ -2154,6 +2213,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/readdir.c
   lib/readline.c
   lib/readline.h
+  lib/readlink.c
+  lib/readlinkat.c
   lib/readutmp.c
   lib/readutmp.h
   lib/realloc.c
@@ -2365,6 +2426,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/c32rtomb.m4
   m4/calloc.m4
   m4/chdir-long.m4
+  m4/chown.m4
   m4/clock_time.m4
   m4/close.m4
   m4/closedir.m4
@@ -2464,6 +2526,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/iswxdigit.m4
   m4/langinfo_h.m4
   m4/largefile.m4
+  m4/lchmod.m4
+  m4/lchown.m4
   m4/ldexpl.m4
   m4/lib-ld.m4
   m4/lib-link.m4
@@ -2483,6 +2547,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/lstat.m4
   m4/malloc.m4
   m4/malloca.m4
+  m4/manywarnings-c++.m4
+  m4/manywarnings.m4
   m4/math_h.m4
   m4/mbchar.m4
   m4/mbiter.m4
@@ -2541,6 +2607,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/read-file.m4
   m4/readdir.m4
   m4/readline.m4
+  m4/readlink.m4
+  m4/readlinkat.m4
   m4/readutmp.m4
   m4/realloc.m4
   m4/reallocarray.m4
@@ -2623,6 +2691,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/visibility.m4
   m4/vsnprintf.m4
   m4/warn-on-use.m4
+  m4/warnings.m4
   m4/wchar_h.m4
   m4/wcrtomb.m4
   m4/wctype.m4

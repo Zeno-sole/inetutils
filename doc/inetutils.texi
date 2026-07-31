@@ -59,7 +59,7 @@
 This manual documents version @value{VERSION} of the @sc{gnu} networking
 utilities.
 
-Copyright @copyright{} 2000--2025 Free Software Foundation, Inc.
+Copyright @copyright{} 2000--2026 Free Software Foundation, Inc.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -3231,6 +3231,11 @@ foreground and prints additional debugging information of stderr.
 Pass local and remote socket information in environment variables.
 @xref{Inetd Environment}.
 
+@item --foreground
+@opindex --foreground
+Run in foreground mode.  Similar to debug mode, but does not enable
+debug messages.
+
 @item -p[@var{file}]
 @itemx --pidfile[=@var{file}]
 @opindex -p
@@ -4154,7 +4159,7 @@ If present, the contents are displayed and all further
 access is refused.
 @end table
 
-@section File format of ftpusers and ftpchroot.
+@section File format of ftpusers and ftpchroot
 @anchor{ftpusers file format}
 
 The files @file{/etc/ftpusers} and @file{/etc/ftpchroot}
@@ -4956,31 +4961,18 @@ telnetd [@var{option}]@dots{}
 @end example
 
 @table @option
+@item --accept-env @var{VAR}
+@opindex --accept-env
+Allow clients to define the @var{VAR} environment variable.  GNU
+@command{telnetd} removes all environment variables by default since
+many of them can be used to escalate privileges.
+
 @item -a @var{authmode}
 @itemx --authmode=@var{authmode}
 @opindex -a
 @opindex --authmode
 Specify what mode to use for authentication.  Allowed values are:
 @samp{none}, @samp{other}, @samp{user}, @samp{valid}, and @samp{off}.
-
-@item -D[@var{list}]
-@itemx --debug=[@var{list}]
-@opindex -D
-@opindex --debug
-Set the debugging level.  The argument is a comma separated list of
-these categories: @samp{options}, @samp{report}, @samp{netdata},
-@samp{ptydata}, @samp{auth}, and @samp{encr}.
-All these may be used in the form @samp{name[=level]}.
-Omission of @samp{level} implies the maximal
-possible debugging level for that particular category.
-
-There is one additional category @samp{tcp}, which does not take
-an additional level indicator, but is instead equivalent to
-setting the socket option @samp{SO_DEBUG} for debugging the
-complete traffic.
-
-The output is written to the file @file{/tmp/telnet.debug},
-and any new data is incrementally added as time passes.
 
 @item -E @var{string}
 @itemx --exec-login=@var{string}
@@ -5039,7 +5031,7 @@ is to be disabled.  Standard choices are @samp{null},
 @samp{kerberos_v4}, and @samp{kerberos_v5}.
 @end table
 
-@section Crafting an execution string.
+@section Crafting an execution string
 
 The server @command{telnetd} contains a built-in execution string
 which invokes @command{login} with arguments suitable for the
@@ -5327,7 +5319,7 @@ Replace the hard coded location of @command{uucico} with the
 value specified as @var{location}.
 @end table
 
-@section Authentication steps.
+@section Authentication steps
 
 Invocation is expected to be conducted by a protocol described
 exchange of user name and password; unfortunately in clear text.

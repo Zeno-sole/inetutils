@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1995-2025 Free Software Foundation, Inc.
+  Copyright (C) 1995-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -93,7 +93,7 @@ telnet_spin (void)
 char *
 telnet_getenv (char *val)
 {
-  return ((char *) env_getvalue (val));
+  return (char *) env_getvalue (val, false);
 }
 
 char *

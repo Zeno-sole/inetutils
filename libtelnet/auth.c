@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1993-2025 Free Software Foundation, Inc.
+  Copyright (C) 1993-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -91,9 +91,6 @@
 # include "auth-proto.h"
 
 # define typemask(x)		(1<<((x)-1))
-
-/* Callback from consumer.  */
-extern void printsub (char, unsigned char *, int);
 
 # ifdef	KRB4_ENCPWD
 extern krb4encpwd_init ();
@@ -424,7 +421,6 @@ auth_request (void)
       *e++ = IAC;
       *e++ = SE;
       net_write (str_request, e - str_request);
-      printsub ('>', &str_request[2], e - str_request - 2);
     }
 }
 
@@ -534,7 +530,6 @@ auth_send (unsigned char *data, int cnt)
       auth_send_data += 2;
     }
   net_write (str_none, sizeof (str_none));
-  printsub ('>', &str_none[2], sizeof (str_none) - 2);
   if (auth_debug_mode)
     printf (">>>%s: Sent failure message\r\n", Name);
   auth_finished (0, AUTH_REJECT);
@@ -645,7 +640,6 @@ auth_sendname (char *name, int len)
   *e++ = IAC;
   *e++ = SE;
   net_write (str_request, e - str_request);
-  printsub ('>', &str_request[2], e - &str_request[2]);
   return (1);
 }
 

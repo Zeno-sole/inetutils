@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2002-2025 Free Software Foundation, Inc.
+  Copyright (C) 2002-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -83,29 +83,6 @@ startslave (char *host, int autologin, char *autoname)
   return master;
 }
 
-/*
- * scrub_env()
- *
- * Remove a few things from the environment that
- * don't need to be there.
- *
- * Security fix included in telnet-95.10.23.NE of David Borman <deb@cray.com>.
- */
-static void
-scrub_env (void)
-{
-  char **cpp, **cpp2;
-
-  for (cpp2 = cpp = environ; *cpp; cpp++)
-    {
-      if (strncmp (*cpp, "LD_", 3)
-	  && strncmp (*cpp, "_RLD_", 5)
-	  && strncmp (*cpp, "LIBPATH=", 8) && strncmp (*cpp, "IFS=", 4))
-	*cpp2++ = *cpp;
-    }
-  *cpp2 = 0;
-}
-
 void
 start_login (char *host, int autologin, char *name)
 {
@@ -117,8 +94,6 @@ start_login (char *host, int autologin, char *name)
   (void) autologin;
   (void) name;
 
-  scrub_env ();
-
   /* Set the environment variable "LINEMODE" to indicate our linemode */
   if (lmodetype == REAL_LINEMODE)
     setenv ("LINEMODE", "real", 1);
@@ -129,6 +104,7 @@ start_login (char *host, int autologin, char *name)
   if (!cmd)
     fatal (net, "can't expand login command line");
   argcv_get (cmd, "", &argc, &argv);
+
   execv (argv[0], argv);
   syslog (LOG_ERR, "%s: %m\n", cmd);
   fatalperror (net, cmd);
@@ -161,8 +137,8 @@ cleanup (int sig)
 
   p = line + sizeof (PATH_TTY_PFX) - 1;
   utmp_logout (p);
-  chmod (line, 0644);
-  chown (line, 0, 0);
+  lchmod (line, 0644);
+  lchown (line, 0, 0);
   shutdown (net, 2);
   exit (status);
 }

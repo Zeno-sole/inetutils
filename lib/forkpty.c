@@ -1,5 +1,5 @@
 /* Fork a child process attached to the slave of a pseudo-terminal.
-   Copyright (C) 2010-2025 Free Software Foundation, Inc.
+   Copyright (C) 2010-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -43,12 +43,13 @@ int
 forkpty (int *amaster, char *name,
          const struct termios *termp, const struct winsize *winp)
 {
-  int master, slave, pid;
+  int master, slave;
 
   if (openpty (&master, &slave, name, termp, winp) == -1)
     return -1;
 
-  switch (pid = fork ())
+  int pid = fork ();
+  switch (pid)
     {
     case -1:
       close (master);

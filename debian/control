@@ -4,18 +4,15 @@ Maintainer: Guillem Jover <guillem@debian.org>
 Vcs-Browser: https://git.hadrons.org/cgit/debian/pkgs/inetutils.git
 Vcs-Git: https://git.hadrons.org/git/debian/pkgs/inetutils.git
 Homepage: https://www.gnu.org/software/inetutils/
-Standards-Version: 4.7.3
+Standards-Version: 4.7.4
 Build-Depends:
  debhelper-compat (= 13),
- debhelper (>= 13.10),
 # Used by the test suite:
 #  /etc/protocols and /etc/services
  netbase <!nocheck>,
 #  netstat(1)
  net-tools <!nocheck>,
 # Used by the build system:
- autoconf,
- automake,
  bison,
  gnulib,
  libsystemd-dev [linux-any],
@@ -25,6 +22,20 @@ Build-Depends:
  libwrap0-dev,
  libcrypt-dev,
  libkrb5-dev,
+Description: GNU Network Utilities
+ The GNU Network Utilities is a collection of common network programs. It
+ includes:
+ .
+  - A syslogd daemon.
+  - An inetd meta-server.
+  - An ftp client and server.
+  - A telnet client and server.
+  - A talk client and server.
+  - Network tools: ping, ping6, traceroute.
+  - Admin tools: hostname, dnsdomainname, ifconfig, logger.
+ .
+ Most of them are improved versions of programs originally from BSD. Some
+ others are original versions, written from scratch.
 
 Package: inetutils-syslogd
 Architecture: any
@@ -43,7 +54,7 @@ Depends:
  ${shlibs:Depends},
  sysvinit-utils (>= 3.05-4~),
  netbase,
-Description: system logging daemon
+Description: GNU system logging daemon
  The syslog daemon is responsible for providing logging of messages
  received from programs and facilities on the local host as well as
  from remote hosts.
@@ -63,9 +74,9 @@ Depends:
  sysvinit-utils (>= 3.05-4~),
  tcpd,
  update-inetd,
-Description: internet super server
- Inetd is the daemon that listens on various TCP and UDP ports and spawns
- programs that can't or won't do it for themselves.
+Description: GNU internet super server
+ The inetd program is the daemon that listens on various TCP and UDP ports and
+ spawns programs that can't or won't do it for themselves.
  .
  This is the portable GNU implementation of inetd. The package supports
  IPv6, tcpmux services and unlimited server arguments.
@@ -80,11 +91,12 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  netbase,
-Description: ICMP echo tool
- Ping uses ICMP to send out echo requests, and uses the reply packets to
- calculate latency between the sending and the destination hosts.
+Description: GNU ping and ping6 - ICMP and ICMP6 echo tools
+ The ping and ping6 programs use the ICMP and ICMP6 protocols to send out
+ echo requests, and uses the reply packets to calculate latency between the
+ sending and the destination hosts.
  .
- This is the portable GNU implementation of ping.
+ This is the portable GNU implementation of ping and ping6.
 
 Package: inetutils-traceroute
 Architecture: any
@@ -94,7 +106,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  netbase,
-Description: trace the IPv4 route to another host
+Description: GNU traceroute - trace a route towards another IPv4 host
  The traceroute utility displays the route taken by IP packets on their
  way to another host or another network.
  .
@@ -108,7 +120,7 @@ Provides:
 Depends:
  ${misc:Depends},
  ${shlibs:Depends},
-Description: base networking utilities (experimental package)
+Description: GNU base networking utilities (experimental package)
  Base utilities for network administration:
  .
   - ifconfig
@@ -125,7 +137,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  netbase,
-Description: File Transfer Protocol client
+Description: GNU File Transfer Protocol (FTP) client
  The ftp command is used to transfer files between hosts using the
  FTP protocol.
 
@@ -141,9 +153,9 @@ Depends:
  inetutils-inetd | inet-superserver,
  inetutils-syslogd | system-log-daemon | systemd-sysv,
  netbase,
-Description: File Transfer Protocol server
- Ftpd is the server that allows another host to connect with the ftp
- command to transfer files using the FTP protocol.
+Description: GNU File Transfer Protocol (FTP) server
+ The ftpd program is the server that allows another host to connect with the
+ ftp command to transfer files using the FTP protocol.
 
 Package: inetutils-telnet
 Priority: standard
@@ -155,7 +167,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  netbase,
-Description: telnet client
+Description: GNU telnet client
  The telnet command is used for interactive communication with another host
  using the TELNET protocol.
  .
@@ -195,7 +207,7 @@ Depends:
  inetutils-syslogd | system-log-daemon | systemd-sysv,
  login,
  netbase,
-Description: telnet server
+Description: GNU telnet server
  The telnetd program is a server which supports the DARPA telnet
  interactive communication protocol.
  .
@@ -229,7 +241,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  netbase,
-Description: talk to another user
+Description: GNU talk client
  The talk program is used for visual communication which copies lines from
  your terminal to that of another user.
 
@@ -245,8 +257,8 @@ Depends:
  inetutils-inetd | inet-superserver,
  inetutils-syslogd | system-log-daemon | systemd-sysv,
  netbase,
-Description: remote user communication server
+Description: GNU talk server
  The talkd program is a server that notifies a user that someone else
- wants to initiate a conversation. It acts a repository of invitations,
+ wants to initiate a conversation. It acts as a repository of invitations,
  responding to requests by clients wishing to rendezvous to hold a
  conversation.

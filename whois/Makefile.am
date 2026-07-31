@@ -1,5 +1,5 @@
 #
-# Copyright (C) 1998-2025 Free Software Foundation, Inc.
+# Copyright (C) 1998-2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU Inetutils.
 #
@@ -17,6 +17,8 @@
 # along with this program.  If not, see `http://www.gnu.org/licenses/'.
 
 AM_CPPFLAGS = $(iu_INCLUDES)
+
+AM_CFLAGS = $(WARN_CFLAGS)
 
 LDADD = $(iu_LIBRARIES)
 

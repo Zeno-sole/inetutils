@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1995-2025 Free Software Foundation, Inc.
+  Copyright (C) 1995-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -1625,8 +1625,6 @@ void
 ptransfer (char *direction, long long int bytes, struct timespec *t0,
 	   struct timespec *t1)
 {
-  double s, bs;
-
   if (verbose)
     {
       struct timespec ts = timespec_sub (*t1, *t0);

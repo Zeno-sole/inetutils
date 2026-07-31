@@ -1,6 +1,6 @@
 /* A more useful interface to strtol.
 
-   Copyright (C) 1995-1996, 1998-2001, 2003-2007, 2009-2025 Free Software
+   Copyright (C) 1995-1996, 1998-2001, 2003-2007, 2009-2026 Free Software
    Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -117,16 +117,14 @@ __xstrtol (char const *nptr, char **endptr, int base,
 
   if (**p != '\0')
     {
-      int xbase = 1024;
-      int suffixes = 1;
-      strtol_error overflow;
-
       if (!strchr (valid_suffixes, **p))
         {
           *val = tmp;
           return err | LONGINT_INVALID_SUFFIX_CHAR;
         }
 
+      int xbase = 1024;
+      int suffixes = 1;
       switch (**p)
         {
         case 'E': case 'G': case 'g': case 'k': case 'K': case 'M': case 'm':
@@ -155,6 +153,7 @@ __xstrtol (char const *nptr, char **endptr, int base,
               }
         }
 
+      strtol_error overflow;
       switch (**p)
         {
         case 'b':

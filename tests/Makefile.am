@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2007-2025 Free Software Foundation, Inc.
+# Copyright (C) 2007-2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU Inetutils.
 #
@@ -18,11 +18,14 @@
 
 AM_CPPFLAGS = $(iu_INCLUDES)
 
+AM_CFLAGS = $(WARN_CFLAGS)
+
 LDADD = $(iu_LIBRARIES)
 
 EXTRA_DIST = tools.sh.in ifconfig_modes.sh crash-tftp-msg2021-12_18.bin \
 	crash-ftp-msg2021-12_03.bin crash-ftp-msg2021-12_16.bin \
-	crash-ftp-msg2021-12_04.bin crash-ftp-msg2021-12_05.bin
+	crash-ftp-msg2021-12_04.bin crash-ftp-msg2021-12_05.bin \
+	utmp.sh
 
 noinst_PROGRAMS = identify
 identify_LDADD = $(top_builddir)/lib/libgnu.a $(LIBUTIL) $(PTY_LIB)
@@ -33,7 +36,7 @@ localhost_LDADD = $(LDADD) $(LIBSOCKET) $(LIBINTL) $(GETADDRINFO_LIB)
 readutmp_LDADD = $(iu_LIBRARIES) $(READUTMP_LIB)
 runtime_ipv6_LDADD = $(LDADD) $(LIBSOCKET) $(LIBINTL) $(GETADDRINFO_LIB)
 
-dist_check_SCRIPTS = utmp.sh
+dist_check_SCRIPTS =
 
 if ENABLE_inetd
 check_PROGRAMS += addrpeek tcpget

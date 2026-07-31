@@ -1,5 +1,5 @@
 /* changeif.c -- change the configuration of a network interface
-  Copyright (C) 2001-2025 Free Software Foundation, Inc.
+  Copyright (C) 2001-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -248,12 +248,11 @@ set_hwaddr (int sfd, struct ifreq *ifr, char *hwaddr)
   int err;
   struct ether_addr *ether;
   struct sockaddr *sa = (struct sockaddr *) &ifr->ifr_hwaddr;
+  struct ether_addr addr;
 
   ether = ether_aton (hwaddr);
   if (!ether)
     {
-      struct ether_addr addr;
-
       err = ether_hostton (hwaddr, &addr);
       if (err)
 	{

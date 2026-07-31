@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1994-2025 Free Software Foundation, Inc.
+  Copyright (C) 1994-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -104,10 +104,6 @@
 #include <glob.h>
 
 #include "extern.h"
-
-#if !defined NBBY && defined CHAR_BIT
-#define NBBY CHAR_BIT
-#endif
 
 off_t restart_point;
 
@@ -273,7 +269,6 @@ cmd
 			    break;
 
 			  case TYPE_L:
-#if defined NBBY && NBBY == 8
 			    if (cmd_bytesz == 8)
 			      {
 				reply (200, "Type set to L (byte size 8).");
@@ -281,9 +276,6 @@ cmd
 			      }
 			    else
 			      reply (504, "Byte size must be 8.");
-#else /* NBBY == 8 */
-			  UNIMPLEMENTED for NBBY != 8
-#endif /* NBBY == 8 */
 			  }
 		}
 	| STRU SP struct_code CRLF
@@ -601,9 +593,9 @@ cmd
 
 			if (!no_version && version)
 			  reply (215, "%s Type: L%d Version: %s",
-				 sys_type, NBBY, version);
+				 sys_type, CHAR_BIT, version);
 			else
-			  reply (215, "%s Type: L%d", sys_type, NBBY);
+			  reply (215, "%s Type: L%d", sys_type, CHAR_BIT);
 
 #ifdef HAVE_UNAME
 			free (version);
@@ -1174,7 +1166,7 @@ type_code
 	| L
 		{
 			cmd_type = TYPE_L;
-			cmd_bytesz = NBBY;
+			cmd_bytesz = CHAR_BIT;
 		}
 	| L SP byte_size
 		{

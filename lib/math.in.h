@@ -1,6 +1,6 @@
 /* A GNU-like <math.h>.
 
-   Copyright (C) 2002-2003, 2007-2025 Free Software Foundation, Inc.
+   Copyright (C) 2002-2003, 2007-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -2461,18 +2461,25 @@ _GL_CXXALIASWARN (yn);
    declarations.  */
 
 
-#if @GNULIB_ISFINITE@
+#if @GNULIB_ISFINITE@ || @GNULIB_ISFINITE_NO_CXX@
 # if @REPLACE_ISFINITE@
 _GL_EXTERN_C int gl_isfinitef (float x);
 _GL_EXTERN_C int gl_isfinited (double x);
 _GL_EXTERN_C int gl_isfinitel (long double x);
-#  undef isfinite
-#  define isfinite(x) \
-   (sizeof (x) == sizeof (long double) ? gl_isfinitel (x) : \
-    sizeof (x) == sizeof (double) ? gl_isfinited (x) : \
-    gl_isfinitef (x))
+#  ifdef __cplusplus
+template <typename T> int isfinite (T);
+template <> inline int isfinite<float> (float x) { return gl_isfinitef (x); }
+template <> inline int isfinite<double> (double x) { return gl_isfinited (x); }
+template <> inline int isfinite<long double> (long double x) { return gl_isfinitel (x); }
+#  else
+#   undef isfinite
+#   define isfinite(x) \
+      (sizeof (x) == sizeof (long double) ? gl_isfinitel (x) : \
+       sizeof (x) == sizeof (double) ? gl_isfinited (x) : \
+       gl_isfinitef (x))
+#  endif
 # endif
-# ifdef __cplusplus
+# if @GNULIB_ISFINITE@ && defined __cplusplus
 #  if defined isfinite || defined GNULIB_NAMESPACE
 _GL_MATH_CXX_REAL_FLOATING_DECL_1 (isfinite)
 #   undef isfinite
@@ -2496,18 +2503,25 @@ _GL_WARN_REAL_FLOATING_DECL (isfinite);
 #endif
 
 
-#if @GNULIB_ISINF@
+#if @GNULIB_ISINF@ || @GNULIB_ISINF_NO_CXX@
 # if @REPLACE_ISINF@
 _GL_EXTERN_C int gl_isinff (float x);
 _GL_EXTERN_C int gl_isinfd (double x);
 _GL_EXTERN_C int gl_isinfl (long double x);
-#  undef isinf
-#  define isinf(x) \
-   (sizeof (x) == sizeof (long double) ? gl_isinfl (x) : \
-    sizeof (x) == sizeof (double) ? gl_isinfd (x) : \
-    gl_isinff (x))
+#  ifdef __cplusplus
+template <typename T> int isinf (T);
+template <> inline int isinf<float> (float x) { return gl_isinff (x); }
+template <> inline int isinf<double> (double x) { return gl_isinfd (x); }
+template <> inline int isinf<long double> (long double x) { return gl_isinfl (x); }
+#  else
+#   undef isinf
+#   define isinf(x) \
+      (sizeof (x) == sizeof (long double) ? gl_isinfl (x) : \
+       sizeof (x) == sizeof (double) ? gl_isinfd (x) : \
+       gl_isinff (x))
+#  endif
 # endif
-# ifdef __cplusplus
+# if @GNULIB_ISINF@ && defined __cplusplus
 #  if defined isinf || defined GNULIB_NAMESPACE
 _GL_MATH_CXX_REAL_FLOATING_DECL_1 (isinf)
 #   undef isinf
@@ -2611,7 +2625,7 @@ _GL_EXTERN_C int isnanl (long double x) _GL_ATTRIBUTE_CONST;
 #endif
 
 /* This must come *after* the snippets for GNULIB_ISNANF and GNULIB_ISNANL!  */
-#if @GNULIB_ISNAN@
+#if @GNULIB_ISNAN@ || @GNULIB_ISNAN_NO_CXX@
 # if @REPLACE_ISNAN@
 /* We can't just use the isnanf macro (e.g.) as exposed by
    isnanf.h (e.g.) here, because those may end up being macros
@@ -2635,19 +2649,35 @@ _GL_EXTERN_C int rpl_isnand (double x);
 _GL_EXTERN_C int rpl_isnanl (long double x) _GL_ATTRIBUTE_CONST;
 #   define gl_isnan_l(x) rpl_isnanl (x)
 #  endif
-#  undef isnan
-#  define isnan(x) \
-   (sizeof (x) == sizeof (long double) ? gl_isnan_l (x) : \
-    sizeof (x) == sizeof (double) ? gl_isnan_d (x) : \
-    gl_isnan_f (x))
+#  ifdef __cplusplus
+#   undef isnan
+template <typename T> int isnan (T);
+template <> inline int isnan<float> (float x) { return gl_isnan_f (x); }
+template <> inline int isnan<double> (double x) { return gl_isnan_d (x); }
+template <> inline int isnan<long double> (long double x) { return gl_isnan_l (x); }
+#  else
+#   undef isnan
+#   define isnan(x) \
+      (sizeof (x) == sizeof (long double) ? gl_isnan_l (x) : \
+       sizeof (x) == sizeof (double) ? gl_isnan_d (x) : \
+       gl_isnan_f (x))
+#  endif
 # elif (__GNUC__ >= 4) || (__clang_major__ >= 4)
-#  undef isnan
-#  define isnan(x) \
-   (sizeof (x) == sizeof (long double) ? __builtin_isnan ((long double)(x)) : \
-    sizeof (x) == sizeof (double) ? __builtin_isnan ((double)(x)) : \
-    __builtin_isnan ((float)(x)))
+#  ifdef __cplusplus
+#   undef isnan
+template <typename T> int isnan (T);
+template <> inline int isnan<float> (float x) { return __builtin_isnan (x); }
+template <> inline int isnan<double> (double x) { return __builtin_isnan (x); }
+template <> inline int isnan<long double> (long double x) { return __builtin_isnan (x); }
+#  else
+#   undef isnan
+#   define isnan(x) \
+      (sizeof (x) == sizeof (long double) ? __builtin_isnan ((long double)(x)) : \
+       sizeof (x) == sizeof (double) ? __builtin_isnan ((double)(x)) : \
+       __builtin_isnan ((float)(x)))
+#  endif
 # endif
-# ifdef __cplusplus
+# if @GNULIB_ISNAN@ && defined __cplusplus
 #  if defined isnan || defined GNULIB_NAMESPACE
 _GL_MATH_CXX_REAL_FLOATING_DECL_1 (isnan)
 #   undef isnan
@@ -2681,15 +2711,22 @@ _GL_WARN_REAL_FLOATING_DECL (isnan);
 #endif
 
 
-#if @GNULIB_SIGNBIT@
+#if @GNULIB_SIGNBIT@ || @GNULIB_SIGNBIT_NO_CXX@
 # if (@REPLACE_SIGNBIT_USING_BUILTINS@ \
       && (!defined __cplusplus || __cplusplus < 201103))
 #  undef signbit
    /* GCC >= 4.0 and clang provide three built-ins for signbit.  */
-#  define signbit(x) \
-   (sizeof (x) == sizeof (long double) ? __builtin_signbitl (x) : \
-    sizeof (x) == sizeof (double) ? __builtin_signbit (x) : \
-    __builtin_signbitf (x))
+#  if defined __cplusplus && !defined __clang__
+template <typename T> int signbit (T);
+template <> inline int signbit<float> (float x) { return __builtin_signbitf (x); }
+template <> inline int signbit<double> (double x) { return __builtin_signbit (x); }
+template <> inline int signbit<long double> (long double x) { return __builtin_signbitl (x); }
+#  else
+#   define signbit(x) \
+      (sizeof (x) == sizeof (long double) ? __builtin_signbitl (x) : \
+       sizeof (x) == sizeof (double) ? __builtin_signbit (x) : \
+       __builtin_signbitf (x))
+#  endif
 # endif
 # if @REPLACE_SIGNBIT@ && !GNULIB_defined_signbit
 #  undef signbit
@@ -2733,13 +2770,20 @@ _GL_EXTERN_C int gl_signbitl (long double arg);
         })
 #   endif
 #  endif
-#  define signbit(x) \
-   (sizeof (x) == sizeof (long double) ? gl_signbitl (x) : \
-    sizeof (x) == sizeof (double) ? gl_signbitd (x) : \
-    gl_signbitf (x))
+#  if defined __cplusplus && !defined __clang__
+template <typename T> int signbit (T);
+template <> inline int signbit<float> (float x) { return gl_signbitf (x); }
+template <> inline int signbit<double> (double x) { return gl_signbitd (x); }
+template <> inline int signbit<long double> (long double x) { return gl_signbitl (x); }
+#  else
+#   define signbit(x) \
+      (sizeof (x) == sizeof (long double) ? gl_signbitl (x) : \
+       sizeof (x) == sizeof (double) ? gl_signbitd (x) : \
+       gl_signbitf (x))
+#  endif
 #  define GNULIB_defined_signbit 1
 # endif
-# ifdef __cplusplus
+# if @GNULIB_SIGNBIT@ && defined __cplusplus
 #  if defined signbit || defined GNULIB_NAMESPACE
 _GL_MATH_CXX_REAL_FLOATING_DECL_1 (signbit)
 #   undef signbit

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 1993-2025 Free Software Foundation, Inc.
+  Copyright (C) 1993-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -36,7 +36,6 @@ static void parse_authmode (char *str);
 #endif
 
 static void parse_linemode (char *str);
-static void parse_debug_level (char *str);
 static void telnetd_setup (int fd);
 static int telnetd_run (void);
 static void print_hostinfo (void);
@@ -55,7 +54,7 @@ char *login_invocation =
   /* At least for SunOS 5.8.  */
   PATH_LOGIN " -h %h %?T{%T} %?u{-- %u}{%U}"
 #else /* !SOLARIS */
-  PATH_LOGIN " -p -h %h %?u{-f %u}{%U}"
+  PATH_LOGIN " -p -h %h %?u{-f -- %u}{-- %U}"
 #endif
   ;
 
@@ -66,9 +65,6 @@ int alwayslinemode;		/* Always set the linemode (1) */
 int lmodetype;			/* Type of linemode (2) */
 int hostinfo = 1;		/* Print the host-specific information before
 				   login */
-
-int debug_level[debug_max_mode];	/* Debugging levels */
-int debug_tcp = 0;		/* Should the SO_DEBUG be set? */
 
 int pending_sigchld = 0;	/* Needed to drain pty input.  */
 
@@ -105,12 +101,32 @@ char *terminaltype;
 
 int SYNCHing;			/* we are in TELNET SYNCH mode */
 struct telnetd_clocks clocks;
-
+
+/* Set of environment variables that we do not remove from clients.  */
+gl_set_t accept_env_set = NULL;
+
+static size_t
+string_hashcode (const void *s)
+{
+  return hash_string (s, strlen (s));
+}
+
+static bool
+string_equals (const void *a, const void *b)
+{
+  return strcmp (a, b) == 0;
+}
+
+/* List of long options without short option counterparts.  */
+enum
+{
+  ACCEPT_ENV_OPTION = UCHAR_MAX + 1
+};
 
 static struct argp_option argp_options[] = {
 #define GRID 10
-  {"debug", 'D', "LEVEL", OPTION_ARG_OPTIONAL,
-   "set debugging level", GRID},
+  {"accept-env", ACCEPT_ENV_OPTION, "NAME", 0,
+   "accept the environment variable from clients", GRID},
   {"exec-login", 'E', "STRING", 0,
    "set program to be executed instead of standard login(1)", GRID},
   {"no-hostinfo", 'h', NULL, 0,
@@ -144,15 +160,19 @@ parse_opt (int key, char *arg, struct argp_state *state MAYBE_UNUSED)
 {
   switch (key)
     {
+
+    case ACCEPT_ENV_OPTION:
+      if (!accept_env_set)
+	accept_env_set = gl_set_create_empty (GL_HASH_SET, string_equals,
+					      string_hashcode, NULL);
+      gl_set_add (accept_env_set, arg);
+      break;
+
 #ifdef  AUTHENTICATION
     case 'a':
       parse_authmode (arg);
       break;
 #endif
-
-    case 'D':
-      parse_debug_level (arg);
-      break;
 
     case 'E':
       login_invocation = arg;
@@ -251,68 +271,6 @@ parse_authmode (char *str)
     syslog (LOG_NOTICE, "unknown authorization level for -a: %s", str);
 }
 #endif /* AUTHENTICATION */
-
-static struct
-{
-  char *name;
-  int modnum;
-} debug_mode[debug_max_mode] = {
-  {"options", debug_options},
-  {"report", debug_report},
-  {"netdata", debug_net_data},
-  {"ptydata", debug_pty_data},
-  {"auth", debug_auth},
-  {"encr", debug_encr},
-};
-
-void
-parse_debug_level (char *str)
-{
-  int i;
-  char *tok;
-
-  if (!str)
-    {
-      for (i = 0; i < debug_max_mode; i++)
-	debug_level[debug_mode[i].modnum] = MAX_DEBUG_LEVEL;
-      return;
-    }
-
-  for (tok = strtok (str, ","); tok; tok = strtok (NULL, ","))
-    {
-      int length, level;
-      char *p;
-
-      if (strcmp (tok, "tcp") == 0)
-	{
-	  debug_tcp = 1;
-	  continue;
-	}
-
-      p = strchr (tok, '=');
-      if (p)
-	{
-	  length = p - tok;
-	  level = strtoul (p + 1, NULL, 0);
-	}
-      else
-	{
-	  length = strlen (tok);
-	  level = MAX_DEBUG_LEVEL;
-	}
-
-      for (i = 0; i < debug_max_mode; i++)
-	if (strncmp (debug_mode[i].name, tok, length) == 0)
-	  {
-	    debug_level[debug_mode[i].modnum] = level;
-	    break;
-	  }
-
-      if (i == debug_max_mode)
-	syslog (LOG_NOTICE, "unknown debug mode: %s", tok);
-    }
-}
-
 
 typedef unsigned int ip_addr_t;
  /*FIXME*/ void
@@ -483,10 +441,6 @@ telnetd_setup (int fd)
 		     (char *) &on, sizeof (on)) < 0)
     syslog (LOG_WARNING, "setsockopt (SO_KEEPALIVE): %m");
 
-  if (debug_tcp
-      && setsockopt (fd, SOL_SOCKET, SO_DEBUG, (char *) &on, sizeof (on)) < 0)
-    syslog (LOG_WARNING, "setsockopt (SO_DEBUG): %m");
-
   net = fd;
 
   local_hostname = localhost ();
@@ -497,13 +451,11 @@ telnetd_setup (int fd)
 
   io_setup ();
 
-  /* Before doing anything related to the identity of the client,
-   * scrub the environment variable USER, since it may be set with
-   * an irrelevant user name at this point.  OpenBSD has been known
-   * to offend at this point with their own inetd.  Any demand for
-   * autologin will get attention in getterminaltype().
-   */
-  unsetenv ("USER");
+  /* Clear the environment of all variables before doing anything.  This avoids
+     many ways of escalating privileges.  Environment variable options sent by
+     the client will be checked against ACCEPT_ENV_SET.  */
+  static char *dummy_environ[] = { NULL };
+  environ = dummy_environ;
 
   /* get terminal type. */
   uname[0] = 0;
@@ -586,10 +538,7 @@ telnetd_run (void)
      mode, which we do not want. */
 
   if (his_want_state_is_will (TELOPT_ECHO))
-    {
-      DEBUG (debug_options, 1, debug_output_data ("td: simulating recv\r\n"));
-      willoption (TELOPT_ECHO);
-    }
+    willoption (TELOPT_ECHO);
 
   /* Turn on our echo */
   if (my_state_is_wont (TELOPT_ECHO))
@@ -609,9 +558,6 @@ telnetd_run (void)
 
   init_termbuf ();
   localstat ();
-
-  DEBUG (debug_report, 1,
-	 debug_output_data ("td: Entering processing loop\r\n"));
 
   nfd = ((net > pty) ? net : pty) + 1;
 
@@ -690,7 +636,6 @@ telnetd_run (void)
 	      netclear ();	/* clear buffer back */
 	      net_output_datalen (flushdata, sizeof (flushdata));
 	      set_neturg ();
-	      DEBUG (debug_options, 1, printoption ("td: send IAC", DM));
 	    }
 
 	  if (his_state_is_will (TELOPT_LFLOW)
@@ -705,8 +650,6 @@ telnetd_run (void)
 			   IAC, SB, TELOPT_LFLOW,
 			   flowmode ? LFLOW_ON : LFLOW_OFF, IAC, SE);
 		  net_output_datalen (data, sizeof (data));
-		  DEBUG (debug_options, 1,
-			 printsub ('>', data + 2, sizeof (data) - 2));
 		}
 	    }
 
@@ -782,7 +725,6 @@ print_hostinfo (void)
   str = expand_line (im);
   free (im);
 
-  DEBUG (debug_pty_data, 1, debug_output_data ("sending %s", str));
   pty_input_putback (str, strlen (str));
   free (str);
 }

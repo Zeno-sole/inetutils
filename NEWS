@@ -1,5 +1,78 @@
 GNU inetutils NEWS -- history of user-visible changes.
 
+# Noteworthy changes in release 2.8 (2026-04-29) [stable]
+
+** telnetd no longer supports the --debug (-D) option.  Previously, it
+would open a predictable file name at /tmp/telnet.debug, following it if
+it were a symbolic link.  The data printed to it could also be
+controlled by a client.  These behaviors could be combined to result in
+a local privilege escalation.  Reported by Justin Swartz in
+<https://lists.gnu.org/r/bug-inetutils/2026-03/msg00040.html>.
+Guillem Jover also mentioned that another user can create the file
+before telnetd does, keep the file open, and snoop on sessions which may
+include credentials in
+<https://lists.gnu.org/r/bug-inetutils/2026-03/msg00048.html>.
+
+** telnet no longer leaks the value of unexported environment variables
+to servers sending the NEW-ENVIRON SEND USERVAR command.
+Reported by Justin Swartz in
+<https://www.openwall.com/lists/oss-security/2026/03/13/1>.
+
+** telnetd no longer allows clients to write past the end of a stack
+allocated buffer, possibly leading to remote code execution, using an
+SLC suboption with many triplets using function octets greater than 18.
+CVE-2026-32746
+Reported by Adiel Sol, Arad Inbar, Erez Cohen, Nir Somech, Ben Grinberg,
+Daniel Lubel at DREAM Security Research Team in
+<https://lists.gnu.org/r/bug-inetutils/2026-03/msg00031.html>.
+
+** telnetd now ignores all environment options by default.  Environment
+variables passed by the new --accept-env option can bypass this
+restriction.  This is necessary to avoid vulnerabilities similar to
+CVE-2026-28372, since many different environment variables can be used
+to escalate privileges.
+
+** Fix telnetd remote authentication by-pass vulnerability.  CVE-2026-24061
+Reported by Kyu Neushwaistein.  Initial patch by Paul Eggert; further
+improvements and security advisory by Simon Josefsson.
+
+** Prevent privilege escalation via telnetd abusing systemd service
+credentials support added to the login(1) implementation of util-linux
+in release 2.40.  CVE-2026-28372
+Reported by Ron Ben Yizhak@SafeBreach in
+<https://lists.gnu.org/archive/html/bug-inetutils/2026-02/msg00000.html>.
+
+** telnet: Drop everything related to TN3270.
+The code did not build (several missing required header files) and
+even if we could fix it, we have no way to test it. It may contain
+security vulnerabilities.
+
+** inetd: Adds new --foreground parameter to avoid forking.
+See <https://codeberg.org/inetutils/inetutils/pulls/10>, patch by
+Guillem Jover.
+
+** Paths uses $(runstatedir) instead of $(localstatedir)/run for PID files etc.
+The intention is that this is a no-op for normal installations, and
+the files should end up in the same paths because the default value
+for $(runstatedor) is $(localstatedir)/run.
+
+** Some compiler warnings are now enabled by default.
+Disable with --enable-gcc-warnings=no.  Based on the Gnulib
+manywarnings module, see
+<https://www.gnu.org/software/gnulib/manual/html_node/manywarnings.html>.
+
+** configure.ac avoid implicit declaration of tcpd.h hosts_ctl.
+Patch and report by Mike Gilbert <floppym@gentoo.org> in
+<https://lists.gnu.org/archive/html/bug-inetutils/2026-03/msg00026.html>.
+
+** tests: Improve libls test that doesn't work reliably across file systems.
+See <https://codeberg.org/inetutils/inetutils/pulls/9>.
+
+** Older ChangeLog.? files not included in release tarball.
+They are still available in the git history.  Saves around 0.7MB
+uncompressed in the release tarball.  Compare GNU CoreUtils
+https://cgit.git.savannah.gnu.org/cgit/coreutils.git/commit/NEWS?id=4e112e90b11b70bd6dc5b441f820803fc2aadd69.
+
 # Noteworthy changes in release 2.7 (2025-12-14) [stable]
 
 ** Systems without asprintf are now supported through the use of gnulib.
@@ -883,7 +956,7 @@ systems where weak refs are supported).
 Never released, corresponds to first use of GNU inetutils 1.0 in CVS.
 
 ----------------------------------------------------------------------
-Copyright (C) 1997-2025 Free Software Foundation, Inc.
+Copyright (C) 1997-2026 Free Software Foundation, Inc.
 
 Permission is granted to anyone to make or distribute verbatim copies
 of this document as received, in any medium, provided that the

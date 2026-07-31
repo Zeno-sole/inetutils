@@ -1,5 +1,5 @@
 #
-# Copyright (C) 1997-2025 Free Software Foundation, Inc.
+# Copyright (C) 1997-2026 Free Software Foundation, Inc.
 #
 # This file is part of GNU Inetutils.
 #
@@ -25,6 +25,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	$(NCURSES_INCLUDE) $(INCIDN)
 
+AM_CFLAGS = $(WARN_CFLAGS)
+
 LDADD = \
 	$(top_builddir)/libtelnet/libtelnet.a \
 	$(iu_LIBRARIES) \
@@ -35,7 +37,7 @@ bin_PROGRAMS = $(telnet_BUILD)
 EXTRA_PROGRAMS = telnet
 
 telnet_SOURCES = authenc.c commands.c main.c network.c ring.c sys_bsd.c \
-	telnet.c terminal.c tn3270.c utilities.c
+	telnet.c terminal.c utilities.c
 telnet_LDADD = $(LDADD) $(LIBSOCKET) $(HOSTENT_LIB) $(LIBINTL) \
 	$(GETADDRINFO_LIB)
 

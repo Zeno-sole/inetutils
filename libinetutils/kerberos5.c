@@ -1,5 +1,5 @@
 /* kerberos5.c -- functions to use Heimdal's and MIT's Kerberos V
-  Copyright (C) 2014-2025 Free Software Foundation, Inc.
+  Copyright (C) 2014-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -152,7 +152,7 @@ kerberos_auth (krb5_context *ctx, int verbose, char **cname,
   krb5_data_free (&cksum_data);
 # endif
 
-  rc = krb5_auth_con_getlocalsubkey (*ctx, auth_ctx, key);
+  rc = krb5_auth_con_getsendsubkey (*ctx, auth_ctx, key);
 
   /* send size of AP-REQ to the server */
 

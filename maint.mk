@@ -2,7 +2,7 @@
 # This Makefile fragment tries to be general-purpose enough to be
 # used by many projects via the gnulib maintainer-makefile module.
 
-## Copyright (C) 2001-2025 Free Software Foundation, Inc.
+## Copyright (C) 2001-2026 Free Software Foundation, Inc.
 ##
 ## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -879,18 +879,22 @@ sc_obsolete_symbols:
 # Prohibit BSD4.3/SysV u_char, u_short, u_int and u_long usage.
 sc_unsigned_char:
 	@prohibit=u''_char \
+	exclude='Prohibit ' \
 	halt='don'\''t use u''_char; instead use unsigned char'	\
 	  $(_sc_search_regexp)
 sc_unsigned_short:
 	@prohibit=u''_short \
+	exclude='Prohibit ' \
 	halt='don'\''t use u''_short; instead use unsigned short' \
 	  $(_sc_search_regexp)
 sc_unsigned_int:
 	@prohibit=u''_int \
+	exclude='Prohibit ' \
 	halt='don'\''t use u''_int; instead use unsigned int' \
 	  $(_sc_search_regexp)
 sc_unsigned_long:
 	@prohibit=u''_long \
+	exclude='Prohibit ' \
 	halt='don'\''t use u''_long; instead use unsigned long'	\
 	  $(_sc_search_regexp)
 
@@ -1065,7 +1069,7 @@ sc_GFDL_version:
 # Look out for FSF postal addresses -- use URLs instead:
 # https://www.gnu.org/prep/maintain/html_node/License-Notices-for-Code.html
 sc_fsf_postal:
-	@prohibit='(Mass Ave|Massachusetts Ave|Temple Pl|Franklin St|Milk St)' \
+	@prohibit='([M]ass Ave|[M]assachusetts Ave|[T]emple Pl|[F]ranklin St|[M]ilk St)' \
 	halt='use license URLs instead of FSF postal address' \
 	 $(_sc_search_regexp)
 

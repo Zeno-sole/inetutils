@@ -1,5 +1,5 @@
 /* options.c -- process the command line options
-  Copyright (C) 2001-2025 Free Software Foundation, Inc.
+  Copyright (C) 2001-2026 Free Software Foundation, Inc.
 
   This file is part of GNU Inetutils.
 
@@ -535,7 +535,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
 	    *netlen++ = 0;
 
 	    n = strtol (netlen, &end, 10);
-	    if (!(*netlen && !*end) || n < 0 || n > 32)
+	    if (!(*netlen && !*end) || n > 32)
 	      error (EXIT_FAILURE, 0, "Wrong netmask length %s", netlen);
 
 	    addr.s_addr =

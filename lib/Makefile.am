@@ -1,6 +1,6 @@
 ## DO NOT EDIT! GENERATED AUTOMATICALLY!
 ## Process this file with automake to produce Makefile.in.
-# Copyright (C) 2002-2025 Free Software Foundation, Inc.
+# Copyright (C) 2002-2026 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -63,12 +63,18 @@
 #  git-version-gen \
 #  gitlog-to-changelog \
 #  glob \
+#  hash-set \
+#  hashcode-string1 \
 #  hostent \
 #  intprops \
 #  inttostr \
 #  inttypes-h \
 #  ioctl \
+#  lchmod \
+#  lchown \
+#  limits-h \
 #  malloc-gnu \
+#  manywarnings \
 #  mempcpy \
 #  mgetgroups \
 #  minmax \
@@ -116,6 +122,7 @@
 #  xgetcwd \
 #  xgetdomainname \
 #  xgethostname \
+#  xset \
 #  xsize \
 #  xstrtoimax \
 #  xvasprintf
@@ -484,6 +491,17 @@ endif
 EXTRA_DIST += chdir-long.h
 
 ## end   gnulib module chdir-long
+
+## begin gnulib module chown
+
+if GL_COND_OBJ_CHOWN
+libgnu_a_SOURCES += chown.c
+endif
+if GL_COND_OBJ_FCHOWN_STUB
+libgnu_a_SOURCES += fchown-stub.c
+endif
+
+## end   gnulib module chown
 
 ## begin gnulib module cloexec
 
@@ -1471,6 +1489,12 @@ EXTRA_DIST += hash.h
 
 ## end   gnulib module hash
 
+## begin gnulib module hash-set
+
+libgnu_a_SOURCES += gl_hash_set.h gl_hash_set.c gl_anyhash1.h gl_anyhash2.h gl_anyhash_primes.h
+
+## end   gnulib module hash-set
+
 ## begin gnulib module hashcode-string1
 
 libgnu_a_SOURCES += hashcode-string1.h hashcode-string1.c
@@ -1627,6 +1651,22 @@ EXTRA_libgnu_a_SOURCES += isnan.c isnanl.c
 
 ## end   gnulib module isnanl-nolibm
 
+## begin gnulib module issymlink
+
+libgnu_a_SOURCES += issymlink.c
+
+EXTRA_DIST += issymlink.h
+
+## end   gnulib module issymlink
+
+## begin gnulib module issymlinkat
+
+libgnu_a_SOURCES += issymlinkat.c
+
+EXTRA_DIST += issymlinkat.h
+
+## end   gnulib module issymlinkat
+
 ## begin gnulib module iswblank
 
 if GL_COND_OBJ_ISWBLANK
@@ -1699,6 +1739,22 @@ MOSTLYCLEANFILES += langinfo.h langinfo.h-t
 EXTRA_DIST += langinfo.in.h
 
 ## end   gnulib module langinfo-h
+
+## begin gnulib module lchmod
+
+if GL_COND_OBJ_LCHMOD
+libgnu_a_SOURCES += lchmod.c
+endif
+
+## end   gnulib module lchmod
+
+## begin gnulib module lchown
+
+if GL_COND_OBJ_LCHOWN
+libgnu_a_SOURCES += lchown.c
+endif
+
+## end   gnulib module lchown
 
 ## begin gnulib module libc-config
 
@@ -1926,8 +1982,11 @@ math.h: math.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(
 	      -e 's/@''GNULIB_ILOGBF''@/$(GL_GNULIB_ILOGBF)/g' \
 	      -e 's/@''GNULIB_ILOGBL''@/$(GL_GNULIB_ILOGBL)/g' \
 	      -e 's/@''GNULIB_ISFINITE''@/$(GL_GNULIB_ISFINITE)/g' \
+	      -e 's/@''GNULIB_ISFINITE_NO_CXX''@/$(GL_GNULIB_ISFINITE_NO_CXX)/g' \
 	      -e 's/@''GNULIB_ISINF''@/$(GL_GNULIB_ISINF)/g' \
+	      -e 's/@''GNULIB_ISINF_NO_CXX''@/$(GL_GNULIB_ISINF_NO_CXX)/g' \
 	      -e 's/@''GNULIB_ISNAN''@/$(GL_GNULIB_ISNAN)/g' \
+	      -e 's/@''GNULIB_ISNAN_NO_CXX''@/$(GL_GNULIB_ISNAN_NO_CXX)/g' \
 	      -e 's/@''GNULIB_ISNANF''@/$(GL_GNULIB_ISNANF)/g' \
 	      -e 's/@''GNULIB_ISNAND''@/$(GL_GNULIB_ISNAND)/g' \
 	      -e 's/@''GNULIB_ISNANL''@/$(GL_GNULIB_ISNANL)/g' \
@@ -1972,6 +2031,7 @@ math.h: math.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(
 	      -e 's/@''GNULIB_SETPAYLOADSIGF''@/$(GL_GNULIB_SETPAYLOADSIGF)/g' \
 	      -e 's/@''GNULIB_SETPAYLOADSIGL''@/$(GL_GNULIB_SETPAYLOADSIGL)/g' \
 	      -e 's/@''GNULIB_SIGNBIT''@/$(GL_GNULIB_SIGNBIT)/g' \
+	      -e 's/@''GNULIB_SIGNBIT_NO_CXX''@/$(GL_GNULIB_SIGNBIT_NO_CXX)/g' \
 	      -e 's/@''GNULIB_SINF''@/$(GL_GNULIB_SINF)/g' \
 	      -e 's/@''GNULIB_SINL''@/$(GL_GNULIB_SINL)/g' \
 	      -e 's/@''GNULIB_SINHF''@/$(GL_GNULIB_SINHF)/g' \
@@ -2895,6 +2955,26 @@ EXTRA_DIST += readline.h
 
 ## end   gnulib module readline
 
+## begin gnulib module readlink
+
+if GL_COND_OBJ_READLINK
+libgnu_a_SOURCES += readlink.c
+endif
+
+## end   gnulib module readlink
+
+## begin gnulib module readlinkat
+
+if GL_COND_OBJ_READLINKAT
+libgnu_a_SOURCES += readlinkat.c
+endif
+
+EXTRA_DIST += at-func.c
+
+EXTRA_libgnu_a_SOURCES += at-func.c
+
+## end   gnulib module readlinkat
+
 ## begin gnulib module readutmp
 
 libgnu_a_SOURCES += readutmp.c
@@ -2992,6 +3072,12 @@ endif
 
 ## end   gnulib module select
 
+## begin gnulib module set
+
+libgnu_a_SOURCES += gl_set.h gl_set.c
+
+## end   gnulib module set
+
 ## begin gnulib module setenv
 
 if GL_COND_OBJ_SETENV
@@ -3070,7 +3156,7 @@ EXTRA_DIST += signal.in.h
 
 ## end   gnulib module signal-h
 
-## begin gnulib module signbit
+## begin gnulib module signbit-no-c++
 
 if GL_COND_OBJ_SIGNBIT3
 libgnu_a_SOURCES += signbitf.c signbitd.c signbitl.c
@@ -3078,7 +3164,7 @@ endif
 
 EXTRA_DIST += float+.h
 
-## end   gnulib module signbit
+## end   gnulib module signbit-no-c++
 
 ## begin gnulib module sigprocmask
 
@@ -3612,6 +3698,7 @@ stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 	      -e 's|@''HAVE_STRTOULL''@|$(HAVE_STRTOULL)|g' \
 	      -e 's|@''HAVE_STRUCT_RANDOM_DATA''@|$(HAVE_STRUCT_RANDOM_DATA)|g' \
 	      -e 's|@''HAVE_SYS_LOADAVG_H''@|$(HAVE_SYS_LOADAVG_H)|g' \
+	      -e 's|@''HAVE_SYS_PROCESS_H''@|$(HAVE_SYS_PROCESS_H)|g' \
 	      -e 's|@''HAVE_UNLOCKPT''@|$(HAVE_UNLOCKPT)|g' \
 	      -e 's|@''HAVE_DECL_UNSETENV''@|$(HAVE_DECL_UNSETENV)|g' \
 	      < $@-t1 > $@-t2
@@ -5573,6 +5660,12 @@ libgnu_a_SOURCES += xgethostname.h xgethostname.c
 EXTRA_DIST += xgetaname-impl.h
 
 ## end   gnulib module xgethostname
+
+## begin gnulib module xset
+
+libgnu_a_SOURCES += gl_xset.h gl_xset.c
+
+## end   gnulib module xset
 
 ## begin gnulib module xsize
 

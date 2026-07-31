@@ -1,9 +1,9 @@
 This is inetutils.info, produced by .texi2any-real version 7.1.1 from
 inetutils.texi.
 
-This manual documents version 2.7 of the GNU networking utilities.
+This manual documents version 2.8 of the GNU networking utilities.
 
-   Copyright © 2000-2025 Free Software Foundation, Inc.
+   Copyright © 2000-2026 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -53,9 +53,9 @@ File: inetutils.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU Inetutils
 *************
 
-This manual documents version 2.7 of the GNU networking utilities.
+This manual documents version 2.8 of the GNU networking utilities.
 
-   Copyright © 2000-2025 Free Software Foundation, Inc.
+   Copyright © 2000-2026 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -2640,6 +2640,10 @@ support several command line options.  These are:
      Pass local and remote socket information in environment variables.
      *Note Inetd Environment::.
 
+‘--foreground’
+     Run in foreground mode.  Similar to debug mode, but does not enable
+     debug messages.
+
 ‘-p[FILE]’
 ‘--pidfile[=FILE]’
      Use FILE as location to store process ID of the running server
@@ -3459,8 +3463,8 @@ the ‘ftp’ subtree be constructed with care, following these rules:
      If present, the contents are displayed and all further access is
      refused.
 
-21.4 File format of ftpusers and ftpchroot.
-===========================================
+21.4 File format of ftpusers and ftpchroot
+==========================================
 
 The files ‘/etc/ftpusers’ and ‘/etc/ftpchroot’ share a common file
 format.  For better conformity with other implementations, each line is
@@ -4106,25 +4110,15 @@ File: inetutils.info,  Node: telnetd invocation,  Next: tftpd invocation,  Prev:
 
      telnetd [OPTION]...
 
+‘--accept-env VAR’
+     Allow clients to define the VAR environment variable.  GNU
+     ‘telnetd’ removes all environment variables by default since many
+     of them can be used to escalate privileges.
+
 ‘-a AUTHMODE’
 ‘--authmode=AUTHMODE’
      Specify what mode to use for authentication.  Allowed values are:
      ‘none’, ‘other’, ‘user’, ‘valid’, and ‘off’.
-
-‘-D[LIST]’
-‘--debug=[LIST]’
-     Set the debugging level.  The argument is a comma separated list of
-     these categories: ‘options’, ‘report’, ‘netdata’, ‘ptydata’,
-     ‘auth’, and ‘encr’.  All these may be used in the form
-     ‘name[=level]’.  Omission of ‘level’ implies the maximal possible
-     debugging level for that particular category.
-
-     There is one additional category ‘tcp’, which does not take an
-     additional level indicator, but is instead equivalent to setting
-     the socket option ‘SO_DEBUG’ for debugging the complete traffic.
-
-     The output is written to the file ‘/tmp/telnet.debug’, and any new
-     data is incrementally added as time passes.
 
 ‘-E STRING’
 ‘--exec-login=STRING’
@@ -4165,8 +4159,8 @@ File: inetutils.info,  Node: telnetd invocation,  Next: tftpd invocation,  Prev:
      multiple times if more than one type is to be disabled.  Standard
      choices are ‘null’, ‘kerberos_v4’, and ‘kerberos_v5’.
 
-26.1 Crafting an execution string.
-==================================
+26.1 Crafting an execution string
+=================================
 
 The server ‘telnetd’ contains a built-in execution string which invokes
 ‘login’ with arguments suitable for the operating system at hand.  This
@@ -4377,8 +4371,8 @@ There is a single, specific option available:
      Replace the hard coded location of ‘uucico’ with the value
      specified as LOCATION.
 
-28.2 Authentication steps.
-==========================
+28.2 Authentication steps
+=========================
 
 Invocation is expected to be conducted by a protocol described exchange
 of user name and password; unfortunately in clear text.  If those agree
@@ -4883,6 +4877,7 @@ Index
 
 * --:                                    Common options.      (line  27)
 * --8-bit:                               rlogin invocation.   (line  41)
+* --accept-env:                          telnetd invocation.  (line   9)
 * --acl:                                 talkd invocation.    (line  39)
 * --active:                              Ftp options.         (line  19)
 * --address:                             ifconfig invocation. (line  26)
@@ -4892,7 +4887,7 @@ Index
 * --allow-root:                          rlogind invocation.  (line  69)
 * --anonymous-only:                      ftpd invocation.     (line  22)
 * --auth:                                ftpd invocation.     (line  26)
-* --authmode:                            telnetd invocation.  (line  10)
+* --authmode:                            telnetd invocation.  (line  15)
 * --binary:                              telnet invocation.   (line  26)
 * --binary-output:                       telnet invocation.   (line  67)
 * --bind:                                telnet invocation.   (line  34)
@@ -4914,9 +4909,8 @@ Index
 * --debug <7>:                           syslogd invocation.  (line  39)
 * --debug <8>:                           ftpd invocation.     (line  40)
 * --debug <9>:                           talkd invocation.    (line  43)
-* --debug <10>:                          telnetd invocation.  (line  15)
 * --disable-auth:                        telnet invocation.   (line  83)
-* --disable-auth-type:                   telnetd invocation.  (line  63)
+* --disable-auth-type:                   telnetd invocation.  (line  53)
 * --domain:                              hostname invocation. (line  24)
 * --down:                                ifconfig invocation. (line  41)
 * --dstaddr:                             ifconfig invocation. (line  38)
@@ -4930,7 +4924,7 @@ Index
 * --error:                               rexec invocation.    (line  30)
 * --escape:                              rlogin invocation.   (line  52)
 * --escape <1>:                          telnet invocation.   (line  46)
-* --exec-login:                          telnetd invocation.  (line  30)
+* --exec-login:                          telnetd invocation.  (line  20)
 * --file:                                hostname invocation. (line  33)
 * --file <1>:                            logger invocation.   (line  35)
 * --first-hop:                           traceroute invocation.
@@ -4938,6 +4932,7 @@ Index
 * --flags:                               ifconfig invocation. (line  45)
 * --flood:                               Ping options.        (line  90)
 * --flood <1>:                           ping6 invocation.    (line  40)
+* --foreground:                          Invocation.          (line  19)
 * --format:                              ifconfig invocation. (line  52)
 * --fqdn:                                hostname invocation. (line  29)
 * --from:                                rcp invocation.      (line  32)
@@ -4989,7 +4984,7 @@ Index
 * --kerberos <2>:                        rsh invocation.      (line  72)
 * --kerberos <3>:                        rlogind invocation.  (line  86)
 * --kerberos <4>:                        rshd invocation.     (line  82)
-* --linemode:                            telnetd invocation.  (line  38)
+* --linemode:                            telnetd invocation.  (line  28)
 * --linger:                              Ping options.        (line  81)
 * --list:                                ifconfig invocation. (line  61)
 * --local-domain:                        rlogind invocation.  (line  58)
@@ -5017,11 +5012,11 @@ Index
 * --no-escape <1>:                       telnet invocation.   (line  50)
 * --no-forward:                          syslogd invocation.  (line  82)
 * --no-glob:                             Ftp options.         (line  33)
-* --no-hostinfo:                         telnetd invocation.  (line  34)
+* --no-hostinfo:                         telnetd invocation.  (line  24)
 * --no-input:                            rsh invocation.      (line  57)
 * --no-keepalive:                        rlogind invocation.  (line  64)
 * --no-keepalive <1>:                    rshd invocation.     (line  94)
-* --no-keepalive <2>:                    telnetd invocation.  (line  43)
+* --no-keepalive <2>:                    telnetd invocation.  (line  33)
 * --no-klog:                             syslogd invocation.  (line  68)
 * --no-login:                            Ftp options.         (line  47)
 * --no-login <1>:                        telnet invocation.   (line  59)
@@ -5041,7 +5036,7 @@ Index
 * --pattern:                             Ping options.        (line 111)
 * --pattern <1>:                         ping6 invocation.    (line  71)
 * --peer:                                ifconfig invocation. (line  38)
-* --pidfile:                             Invocation.          (line  20)
+* --pidfile:                             Invocation.          (line  24)
 * --pidfile <1>:                         syslogd invocation.  (line  31)
 * --pidfile <2>:                         ftpd invocation.     (line  62)
 * --port:                                traceroute invocation.
@@ -5055,8 +5050,8 @@ Index
 * --prompt:                              Ftp options.         (line  61)
 * --quiet:                               Ping options.        (line 118)
 * --quiet <1>:                           ping6 invocation.    (line  79)
-* --r:                                   Invocation.          (line  30)
-* --rate:                                Invocation.          (line  30)
+* --r:                                   Invocation.          (line  34)
+* --rate:                                Invocation.          (line  34)
 * --rcdir:                               syslogd invocation.  (line  27)
 * --rcfile:                              syslogd invocation.  (line  23)
 * --realm:                               rcp invocation.      (line  36)
@@ -5065,10 +5060,10 @@ Index
 * --realm <3>:                           telnet invocation.   (line  54)
 * --recursive:                           rcp invocation.      (line  54)
 * --request-ttl:                         talkd invocation.    (line  57)
-* --resolve:                             Invocation.          (line  25)
+* --resolve:                             Invocation.          (line  29)
 * --resolve-hostnames:                   traceroute invocation.
                                                               (line  58)
-* --reverse-lookup:                      telnetd invocation.  (line  56)
+* --reverse-lookup:                      telnetd invocation.  (line  46)
 * --reverse-required:                    rlogind invocation.  (line  77)
 * --reverse-required <1>:                rshd invocation.     (line 106)
 * --rlogin:                              telnet invocation.   (line  75)
@@ -5076,7 +5071,7 @@ Index
 * --secure-dir:                          tftpd invocation.    (line  29)
 * --server:                              whois invocation.    (line  35)
 * --server-principal:                    rlogind invocation.  (line  90)
-* --server-principal <1>:                telnetd invocation.  (line  47)
+* --server-principal <1>:                telnetd invocation.  (line  37)
 * --servername:                          rshd invocation.     (line  98)
 * --short:                               hostname invocation. (line  41)
 * --short <1>:                           ifconfig invocation. (line  77)
@@ -5162,7 +5157,7 @@ Index
 * -a <6>:                                rlogind invocation.  (line  40)
 * -a <7>:                                rshd invocation.     (line  78)
 * -a <8>:                                talkd invocation.    (line  39)
-* -a <9>:                                telnetd invocation.  (line  10)
+* -a <9>:                                telnetd invocation.  (line  15)
 * -b:                                    ifconfig invocation. (line  32)
 * -B:                                    ifconfig invocation. (line  32)
 * -b <1>:                                telnet invocation.   (line  34)
@@ -5186,7 +5181,6 @@ Index
 * -d <11>:                               ftpd invocation.     (line  40)
 * -d <12>:                               rlogind invocation.  (line  44)
 * -D <2>:                                rlogind invocation.  (line  50)
-* -D <3>:                                telnetd invocation.  (line  15)
 * -debug:                                rlogind invocation.  (line  50)
 * -e:                                    Ftp options.         (line  27)
 * -e <1>:                                rexec invocation.    (line  30)
@@ -5194,7 +5188,7 @@ Index
 * -E:                                    rlogin invocation.   (line  58)
 * -e <3>:                                telnet invocation.   (line  46)
 * -E <1>:                                telnet invocation.   (line  50)
-* -E <2>:                                telnetd invocation.  (line  30)
+* -E <2>:                                telnetd invocation.  (line  20)
 * -f:                                    hostname invocation. (line  29)
 * -F:                                    hostname invocation. (line  33)
 * -F <1>:                                ifconfig invocation. (line  45)
@@ -5217,7 +5211,7 @@ Index
 * -H:                                    whois invocation.    (line  38)
 * -h <3>:                                rexec invocation.    (line  35)
 * -h <4>:                                syslogd invocation.  (line  88)
-* -h <5>:                                telnetd invocation.  (line  34)
+* -h <5>:                                telnetd invocation.  (line  24)
 * -i:                                    hostname invocation. (line  37)
 * -i <1>:                                ifconfig invocation. (line  57)
 * -i <2>:                                logger invocation.   (line  55)
@@ -5255,7 +5249,7 @@ Index
 * -L <2>:                                rlogind invocation.  (line  58)
 * -l <11>:                               rshd invocation.     (line  86)
 * -L <3>:                                rshd invocation.     (line  90)
-* -l <12>:                               telnetd invocation.  (line  38)
+* -l <12>:                               telnetd invocation.  (line  28)
 * -l <13>:                               tftpd invocation.    (line  20)
 * -m:                                    ifconfig invocation. (line  66)
 * -M:                                    ifconfig invocation. (line  73)
@@ -5276,7 +5270,7 @@ Index
 * -n <6>:                                syslogd invocation.  (line  35)
 * -n <7>:                                rlogind invocation.  (line  64)
 * -n <8>:                                rshd invocation.     (line  94)
-* -n <9>:                                telnetd invocation.  (line  43)
+* -n <9>:                                telnetd invocation.  (line  33)
 * -n <10>:                               tftpd invocation.    (line  24)
 * -o:                                    rlogind invocation.  (line  69)
 * -p:                                    ifconfig invocation. (line  38)
@@ -5290,7 +5284,7 @@ Index
 * -p <7>:                                rcp invocation.      (line  45)
 * -p <8>:                                rexec invocation.    (line  43)
 * -P:                                    rexec invocation.    (line  52)
-* -p <9>:                                Invocation.          (line  20)
+* -p <9>:                                Invocation.          (line  24)
 * -P <1>:                                syslogd invocation.  (line  31)
 * -p <10>:                               syslogd invocation.  (line  43)
 * -p <11>:                               ftpd invocation.     (line  62)
@@ -5324,7 +5318,7 @@ Index
 * -S <2>:                                rlogind invocation.  (line  90)
 * -S <3>:                                rshd invocation.     (line  98)
 * -S <4>:                                talkd invocation.    (line  61)
-* -S <5>:                                telnetd invocation.  (line  47)
+* -S <5>:                                telnetd invocation.  (line  37)
 * -s <7>:                                tftpd invocation.    (line  29)
 * -t:                                    logger invocation.   (line  85)
 * -t <1>:                                Ping options.        (line  31)
@@ -5342,7 +5336,7 @@ Index
 * -t <7>:                                talkd invocation.    (line  67)
 * -u:                                    rexec invocation.    (line  57)
 * -u <1>:                                ftpd invocation.     (line  82)
-* -U:                                    telnetd invocation.  (line  56)
+* -U:                                    telnetd invocation.  (line  46)
 * -u <2>:                                tftpd invocation.    (line  36)
 * -u <3>:                                uucpd invocation.    (line  19)
 * -v:                                    ifconfig invocation. (line  85)
@@ -5363,18 +5357,18 @@ Index
 * -x <4>:                                telnet invocation.   (line  79)
 * -X:                                    telnet invocation.   (line  83)
 * -x <5>:                                rlogind invocation.  (line  94)
-* -X <1>:                                telnetd invocation.  (line  63)
+* -X <1>:                                telnetd invocation.  (line  53)
 * -y:                                    hostname invocation. (line  46)
 * .netrc:                                The .netrc file.     (line   6)
-* %a:                                    telnetd invocation.  (line  91)
-* %d:                                    telnetd invocation.  (line  94)
-* %h:                                    telnetd invocation.  (line  97)
-* %l:                                    telnetd invocation.  (line 100)
-* %L:                                    telnetd invocation.  (line 103)
-* %t:                                    telnetd invocation.  (line 106)
-* %T:                                    telnetd invocation.  (line 109)
-* %u:                                    telnetd invocation.  (line 112)
-* %U:                                    telnetd invocation.  (line 115)
+* %a:                                    telnetd invocation.  (line  81)
+* %d:                                    telnetd invocation.  (line  84)
+* %h:                                    telnetd invocation.  (line  87)
+* %l:                                    telnetd invocation.  (line  90)
+* %L:                                    telnetd invocation.  (line  93)
+* %t:                                    telnetd invocation.  (line  96)
+* %T:                                    telnetd invocation.  (line  99)
+* %u:                                    telnetd invocation.  (line 102)
+* %U:                                    telnetd invocation.  (line 105)
 * bug, reporting:                        Introduction.        (line  14)
 * common options:                        Common options.      (line   6)
 * dnsdomainname:                         dnsdomainname invocation.
@@ -5467,28 +5461,28 @@ Ref: telnet options91929
 Node: tftp invocation93342
 Node: inetd invocation96841
 Node: Invocation98282
-Node: Configuration file99321
-Node: Built-in services105844
-Node: TCPMUX107244
-Node: Inetd Environment108827
-Node: Error Messages109750
-Node: syslogd invocation111615
-Node: ftpd invocation122180
-Ref: ftpd standards125767
-Ref: ftpd authentication129590
-Ref: ftpd files132208
-Ref: ftpusers file format132893
-Node: rexecd invocation134179
-Node: rlogind invocation137740
-Node: rshd invocation145154
-Node: talkd invocation151002
-Node: telnetd invocation158183
-Node: tftpd invocation163442
-Ref: tftpd validation164644
-Ref: tftpd setup cases165926
-Node: uucpd invocation167398
-Node: GNU Free Documentation License168717
-Node: Index193875
+Node: Configuration file99435
+Node: Built-in services105958
+Node: TCPMUX107358
+Node: Inetd Environment108941
+Node: Error Messages109864
+Node: syslogd invocation111729
+Node: ftpd invocation122294
+Ref: ftpd standards125881
+Ref: ftpd authentication129704
+Ref: ftpd files132322
+Ref: ftpusers file format133005
+Node: rexecd invocation134291
+Node: rlogind invocation137852
+Node: rshd invocation145266
+Node: talkd invocation151114
+Node: telnetd invocation158295
+Node: tftpd invocation163031
+Ref: tftpd validation164233
+Ref: tftpd setup cases165515
+Node: uucpd invocation166987
+Node: GNU Free Documentation License168304
+Node: Index193462
 
 End Tag Table
 

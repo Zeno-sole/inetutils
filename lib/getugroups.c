@@ -1,6 +1,6 @@
 /* getugroups.c -- return a list of the groups a user is in
 
-   Copyright (C) 1990-1991, 1998-2000, 2003-2025 Free Software Foundation, Inc.
+   Copyright (C) 1990-1991, 1998-2000, 2003-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -71,20 +71,17 @@ getugroups (int maxcount, gid_t *grouplist, char const *username,
   setgrent ();
   while (1)
     {
-      struct group *grp;
-
       errno = 0;
-      grp = getgrent ();
+      struct group *grp = getgrent ();
       if (grp == NULL)
         break;
 
       for (char **cp = grp->gr_mem; *cp; ++cp)
         {
-          int n;
-
           if (streq (username, *cp))
             {
               /* See if this group number is already on the list.  */
+              int n;
               for (n = 0; n < count; ++n)
                 if (grouplist && grouplist[n] == grp->gr_gid)
                   break;
