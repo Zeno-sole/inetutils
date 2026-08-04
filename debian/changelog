@@ -1,3 +1,9 @@
+inetutils (2:2.8-3deepin1) unstable; urgency=medium
+
+  * update telnetd changelog.
+
+ -- lichenggang <lichenggang@deepin.org>  Tue, 04 Aug 2026 20:31:42 +0800
+
 inetutils (2:2.8-3) unstable; urgency=high
 
   * Fix talkd to no longer overflow a buffer when writing an announcement for

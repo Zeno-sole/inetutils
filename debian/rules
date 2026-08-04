@@ -118,7 +118,7 @@ override_dh_fixperms:
 
 override_dh_gencontrol:
 	dh_gencontrol -ptelnet -ptelnetd -- \
-	  -v0.17+$(DEB_VERSION_UPSTREAM_REVISION)
+	  -v0.17.1+$(DEB_VERSION_UPSTREAM_REVISION)
 	dh_gencontrol -pinetutils-syslogd -- \
 	  -Vsyslogd:Provides="$(syslogd_provides)"
 	dh_gencontrol -Ninetutils-syslogd -Ntelnet -Ntelnetd -- \
